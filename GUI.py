@@ -1,6 +1,7 @@
 import pygame
 import sys
 import os
+from Vision import *
 
 class GUI:
     def __init__(self, width, height):
@@ -91,6 +92,8 @@ class GUI:
                         color = self.WHITE
                     elif cell == 1:
                         color = self.BLACK
+                    elif cell == 10:
+                        color = self.YELLOW
                     pygame.draw.rect(self.screen, color, (x, y, cell_size, cell_size))
         pygame.display.flip()
 
@@ -171,6 +174,8 @@ class GUI:
             text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
             self.screen.blit(text_surface, text_rect)
         
+        matrix = calculate_vision(matrix, 3, 3)
+
         partition = self.WIDTH // 16
         start_x_matrix = partition * 0.5
         start_y_matrix = partition * 1.5
