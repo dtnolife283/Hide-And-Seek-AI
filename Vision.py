@@ -35,51 +35,192 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
 
     if NORTHWEST_LVI:
         if tmpMatrix[NORTHWEST_LVI[0]][NORTHWEST_LVI[1]] == 1:
-            for i in range(start_vision_row, NORTHWEST_LVI[0]):
-                for j in range(start_vision_col, NORTHWEST_LVI[1]):
-                    tmpMatrix[i][j] = -1
+            row_seen = True
+            col_seen = True
+            if tmpMatrix[NORTHWEST_LVI[0] + 1][NORTHWEST_LVI[1]] == 1:
+                col_seen = False
+            if tmpMatrix[NORTHWEST_LVI[0]][NORTHWEST_LVI[1] + 1] == 1:
+                row_seen = False
+            if row_seen and col_seen:
+                for i in range(start_vision_row, NORTHWEST_LVI[0]):
+                    for j in range(start_vision_col, NORTHWEST_LVI[1]):
+                        tmpMatrix[i][j] = -1
+            elif row_seen and (not col_seen):
+                for i in range(start_vision_row, NORTHWEST_LVI[0]):
+                    for j in range(start_vision_col, NORTHWEST_LVI[1] + 1):
+                        tmpMatrix[i][j] = -1
+            elif (not row_seen) and col_seen:
+                for i in range(start_vision_row, NORTHWEST_LVI[0] + 1):
+                    for j in range(start_vision_col, NORTHWEST_LVI[1]):
+                        tmpMatrix[i][j] = -1
+            else:
+                for i in range(start_vision_row, NORTHWEST_LVI[0] + 1):
+                    for j in range(start_vision_col, NORTHWEST_LVI[1] + 1):
+                        tmpMatrix[i][j] = -1
         else:
             if NORTHWEST_LVII:
                 if tmpMatrix[NORTHWEST_LVII[0]][NORTHWEST_LVII[1]] == 1:
-                    for i in range(start_vision_row, NORTHWEST_LVII[0]):
-                        for j in range(start_vision_col, NORTHWEST_LVII[1]):
-                            tmpMatrix[i][j] = -1
-    
+                    row_seen = True
+                    col_seen = True
+                    if tmpMatrix[NORTHWEST_LVII[0] + 1][NORTHWEST_LVII[1]] == 1:
+                        col_seen = False
+                    if tmpMatrix[NORTHWEST_LVII[0]][NORTHWEST_LVII[1] + 1] == 1:
+                        row_seen = False
+                    if row_seen and col_seen:
+                        for i in range(start_vision_row, NORTHWEST_LVII[0]):
+                            for j in range(start_vision_col, NORTHWEST_LVII[1]):
+                                tmpMatrix[i][j] = -1
+                    elif row_seen and (not col_seen):
+                        for i in range(start_vision_row, NORTHWEST_LVII[0]):
+                            for j in range(start_vision_col, NORTHWEST_LVII[1] + 1):
+                                tmpMatrix[i][j] = -1
+                    elif (not row_seen) and col_seen:
+                        for i in range(start_vision_row, NORTHWEST_LVII[0] + 1):
+                            for j in range(start_vision_col, NORTHWEST_LVII[1]):
+                                tmpMatrix[i][j] = -1
+                    else:
+                        for i in range(start_vision_row, NORTHWEST_LVII[0] + 1):
+                            for j in range(start_vision_col, NORTHWEST_LVII[1] + 1):
+                                tmpMatrix[i][j] = -1
+
+
     if NORTHEAST_LVI:
         if tmpMatrix[NORTHEAST_LVI[0]][NORTHEAST_LVI[1]] == 1:
-            for i in range(start_vision_row, NORTHEAST_LVI[0]):
-                for j in range(NORTHEAST_LVI[1] + 1, end_vision_col):
-                    tmpMatrix[i][j] = -1
+            row_seen = True
+            col_seen = True
+            if tmpMatrix[NORTHEAST_LVI[0] + 1][NORTHEAST_LVI[1]] == 1:
+                row_seen = False
+            if tmpMatrix[NORTHEAST_LVI[0]][NORTHEAST_LVI[1] - 1] == 1:
+                col_seen = False
+            if row_seen and col_seen:
+                for i in range(start_vision_row, NORTHEAST_LVI[0]):
+                    for j in range(NORTHEAST_LVI[1] + 1, end_vision_col):
+                        tmpMatrix[i][j] = -1
+            elif row_seen and (not col_seen):
+                for i in range(start_vision_row, NORTHEAST_LVI[0]):
+                    for j in range(NORTHEAST_LVI[1], end_vision_col):
+                        tmpMatrix[i][j] = -1
+            elif (not row_seen) and col_seen:
+                for i in range(start_vision_row, NORTHEAST_LVI[0] + 1):
+                    for j in range(NORTHEAST_LVI[1] + 1, end_vision_col):
+                        tmpMatrix[i][j] = -1
+            else:
+                for i in range(start_vision_row, NORTHEAST_LVI[0] + 1):
+                    for j in range(NORTHEAST_LVI[1], end_vision_col):
+                        tmpMatrix[i][j] = -1
         else:
             if NORTHEAST_LVII:
                 if tmpMatrix[NORTHEAST_LVII[0]][NORTHEAST_LVII[1]] == 1:
-                    for i in range(start_vision_row, NORTHEAST_LVII[0]):
-                        for j in range(NORTHEAST_LVII + 1, end_vision_col):
-                            tmpMatrix[i][j] = -1
+                    row_seen = True
+                    col_seen = True
+                    if tmpMatrix[NORTHEAST_LVII[0] + 1][NORTHEAST_LVII[1]] == 1:
+                        col_seen = False
+                    if tmpMatrix[NORTHEAST_LVII[0]][NORTHEAST_LVII[1] - 1] == 1:
+                        row_seen = False
+                    if row_seen and col_seen:
+                        for i in range(start_vision_row, NORTHEAST_LVII[0]):
+                            for j in range(NORTHEAST_LVII[1] + 1, end_vision_col):
+                                tmpMatrix[i][j] = -1
+                    elif row_seen and (not col_seen):
+                        for i in range(start_vision_row, NORTHEAST_LVII[0]):
+                            for j in range(NORTHEAST_LVII[1], end_vision_col):
+                                tmpMatrix[i][j] = -1
+                    elif (not row_seen) and col_seen:
+                        for i in range(start_vision_row, NORTHEAST_LVII[0] + 1):
+                            for j in range(NORTHEAST_LVII[1] + 1, end_vision_col):
+                                tmpMatrix[i][j] = -1
+                    else:
+                        for i in range(start_vision_row, NORTHEAST_LVII[0] + 1):
+                            for j in range(NORTHEAST_LVII[1], end_vision_col):
+                                tmpMatrix[i][j] = -1
     
     if SOUTHEAST_LVI:
         if tmpMatrix[SOUTHEAST_LVI[0]][SOUTHEAST_LVI[1]] == 1:
-            for i in range(SOUTHEAST_LVI[0] + 1, end_vision_row):
-                for j in range(SOUTHEAST_LVI[1] + 1, end_vision_col):
-                    tmpMatrix[i][j] = -1
+            row_seen = True
+            col_seen = True
+            if tmpMatrix[SOUTHEAST_LVI[0] - 1][SOUTHEAST_LVI[1]] == 1:
+                row_seen = False
+            if tmpMatrix[SOUTHEAST_LVI[0]][SOUTHEAST_LVI[1] - 1] == 1:
+                col_seen = False
+            if row_seen and col_seen:
+                for i in range(SOUTHEAST_LVI[0] + 1, end_vision_row):
+                    for j in range(SOUTHEAST_LVI[1] + 1, end_vision_col):
+                        tmpMatrix[i][j] = -1
+            elif row_seen and (not col_seen):
+                for i in range(SOUTHEAST_LVI[0] + 1, end_vision_row):
+                    for j in range(SOUTHEAST_LVI[1], end_vision_col):
+                        tmpMatrix[i][j] = -1    
+            elif (not row_seen) and col_seen:
+                for i in range(SOUTHEAST_LVI[0], end_vision_row):
+                    for j in range(SOUTHEAST_LVI[1] + 1, end_vision_col):
+                        tmpMatrix[i][j] = -1
+            else:
+                for i in range(SOUTHEAST_LVI[0], end_vision_row):
+                    for j in range(SOUTHEAST_LVI[1], end_vision_col):
+                        tmpMatrix[i][j] = -1
         else:
             if SOUTHEAST_LVII:
                 if tmpMatrix[SOUTHEAST_LVII[0]][SOUTHEAST_LVII[1]] == 1:
-                    for i in range(SOUTHEAST_LVII[0] + 1, end_vision_row):
-                        for j in range(SOUTHEAST_LVII[1] + 1, end_vision_col):
-                            tmpMatrix[i][j] = -1
+                    row_seen = True
+                    col_seen = True
+                    if tmpMatrix[SOUTHEAST_LVII[0] - 1][SOUTHEAST_LVII[1]] == 1:
+                        row_seen = False
+                    if tmpMatrix[SOUTHEAST_LVII[0]][SOUTHEAST_LVII[1] - 1] == 1:
+                        col_seen = False
+                    if row_seen and col_seen:
+                        for i in range(SOUTHEAST_LVII[0] + 1, end_vision_row):
+                            for j in range(SOUTHEAST_LVII[1] + 1, end_vision_col):
+                                tmpMatrix[i][j] = -1
+                    elif row_seen and (not col_seen):
+                        for i in range(SOUTHEAST_LVII[0] + 1, end_vision_row):
+                            for j in range(SOUTHEAST_LVII[1], end_vision_col):
+                                tmpMatrix[i][j] = -1    
+                    elif (not row_seen) and col_seen:
+                        for i in range(SOUTHEAST_LVII[0], end_vision_row):
+                            for j in range(SOUTHEAST_LVII[1] + 1, end_vision_col):
+                                tmpMatrix[i][j] = -1
+                    else:
+                        for i in range(SOUTHEAST_LVII[0], end_vision_row):
+                            for j in range(SOUTHEAST_LVII[1], end_vision_col):
+                                tmpMatrix[i][j] = -1
     
     if SOUTHWEST_LVI:
         if tmpMatrix[SOUTHWEST_LVI[0]][SOUTHWEST_LVI[1]] == 1:
-            for i in range(SOUTHWEST_LVI[0] + 1, end_vision_row):
-                for j in range(start_vision_col, SOUTHWEST_LVI[1]):
-                    tmpMatrix[i][j] = -1
+            row_seen = True
+            col_seen = True
+            if tmpMatrix[SOUTHWEST_LVI[0] - 1][SOUTHWEST_LVI[1]] == 1:
+                row_seen = False
+            if tmpMatrix[SOUTHWEST_LVI[0]][SOUTHWEST_LVI[1] + 1] == 1:
+                col_seen = False
+            if row_seen and col_seen:
+                for i in range(SOUTHWEST_LVI[0] + 1, end_vision_row):
+                    for j in range(start_vision_col, SOUTHWEST_LVI[1]):
+                        tmpMatrix[i][j] = -1
+            elif row_seen and (not col_seen):
+                for i in range(SOUTHWEST_LVI[0] + 1, end_vision_row):
+                    for j in range(start_vision_col, SOUTHWEST_LVI[1] + 1):
+                        tmpMatrix[i][j] = -1
+            elif (not row_seen) and col_seen:
+                for i in range(SOUTHWEST_LVI[0], end_vision_row):
+                    for j in range(start_vision_col, SOUTHWEST_LVI[1]):
+                        tmpMatrix[i][j] = -1
+            else:
+                for i in range(SOUTHWEST_LVI[0], end_vision_row):
+                    for j in range(start_vision_col, SOUTHWEST_LVI[1] + 1):
+                        tmpMatrix[i][j] = -1
         else:
             if SOUTHWEST_LVII:
                 if tmpMatrix[SOUTHWEST_LVII[0]][SOUTHWEST_LVII[1]] == 1:
-                    for i in range(SOUTHWEST_LVII[1] + 1, end_vision_row):
-                        for j in range(start_vision_col, SOUTHWEST_LVII[1]):
-                            tmpMatrix[i][j] = -1
+                    row_seen = True
+                    col_seen = True
+                    if tmpMatrix[SOUTHWEST_LVII[0] - 1][SOUTHWEST_LVII[1]] == 1:
+                        row_seen = False
+                    if tmpMatrix[SOUTHWEST_LVII[0]][SOUTHWEST_LVII[1] + 1] == 1:
+                        col_seen = False
+                    if row_seen and col_seen:
+                        for i in range(SOUTHWEST_LVII[0] + 1, end_vision_row):
+                            for j in range(start_vision_col, SOUTHWEST_LVII[1]):
+                                tmpMatrix[i][j] = -1
 
     if top_length == 3:
         NORTH_LVI = (seeker_row - 1, seeker_col)
