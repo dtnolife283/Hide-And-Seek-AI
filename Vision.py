@@ -18,31 +18,20 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
     start_vision_col = max(0, seeker_col - vision_range)
     end_vision_col = min(len(matrix[0]), seeker_col + vision_range + 1)
 
-    NORTH_LVI = (seeker_row - 1, seeker_col) if seeker_row - 1 >= 0 else None
-    SOUTH_LVI = (seeker_row + 1, seeker_col) if seeker_row + 1 < len(matrix) else None
-    EAST_LVI = (seeker_row, seeker_col + 1) if seeker_col + 1 < len(matrix[0]) else None
-    WEST_LVI = (seeker_row, seeker_col - 1) if seeker_col - 1 >= 0 else None
+    top_length = seeker_row - start_vision_row
+    bottom_length = end_vision_row - seeker_row - 1
+    left_length = seeker_col - start_vision_col
+    right_length = end_vision_col - seeker_col - 1
+
     NORTHEAST_LVI = (seeker_row - 1, seeker_col + 1) if seeker_row - 1 >= 0 and seeker_col + 1 < len(matrix[0]) else None
     NORTHWEST_LVI = (seeker_row - 1, seeker_col - 1) if seeker_row - 1 >= 0 and seeker_col - 1 >= 0 else None
     SOUTHEAST_LVI = (seeker_row + 1, seeker_col + 1) if seeker_row + 1 < len(matrix) and seeker_col + 1 < len(matrix[0]) else None
     SOUTHWEST_LVI = (seeker_row + 1, seeker_col - 1) if seeker_row + 1 < len(matrix) and seeker_col - 1 >= 0 else None
 
-    NORTH_LVII = (seeker_row - 2, seeker_col) if seeker_row - 2 >= 0 else None
-    SOUTH_LVII = (seeker_row + 2, seeker_col) if seeker_row + 2 < len(matrix) else None
-    EAST_LVII = (seeker_row, seeker_col + 2) if seeker_col + 2 < len(matrix[0]) else None
-    WEST_LVII = (seeker_row, seeker_col - 2) if seeker_col - 2 >= 0 else None
     NORTHEAST_LVII = (seeker_row - 2, seeker_col + 2) if seeker_row - 2 >= 0 and seeker_col + 2 < len(matrix[0]) else None
     NORTHWEST_LVII = (seeker_row - 2, seeker_col - 2) if seeker_row - 2 >= 0 and seeker_col - 2 >= 0 else None
     SOUTHEAST_LVII = (seeker_row + 2, seeker_col + 2) if seeker_row + 2 < len(matrix) and seeker_col + 2 < len(matrix[0]) else None
     SOUTHWEST_LVII = (seeker_row + 2, seeker_col - 2) if seeker_row + 2 < len(matrix) and seeker_col - 2 >= 0 else None
-    NORTH_LVII_LEFT = (seeker_row - 2, seeker_col - 1) if seeker_row - 2 >= 0 and seeker_col - 1 >= 0 else None
-    NORTH_LVII_RIGHT = (seeker_row - 2, seeker_col + 1) if seeker_row - 2 >= 0 and seeker_col + 1 < len(matrix[0]) else None
-    SOUTH_LVII_LEFT = (seeker_row + 2, seeker_col - 1) if seeker_row + 2 < len(matrix) and seeker_col - 1 >= 0 else None
-    SOUTH_LVII_RIGHT = (seeker_row + 2, seeker_col + 1) if seeker_row + 2 < len(matrix) and seeker_col + 1 < len(matrix[0]) else None
-    EAST_LVII_UP = (seeker_row - 1, seeker_col + 2) if seeker_row - 1 >= 0 and seeker_col + 2 < len(matrix[0]) else None
-    EAST_LVII_DOWN = (seeker_row + 1, seeker_col + 2) if seeker_row + 1 < len(matrix) and seeker_col + 2 < len(matrix[0]) else None
-    WEST_LVII_UP = (seeker_row - 1, seeker_col - 2) if seeker_row - 1 >= 0 and seeker_col - 2 >= 0 else None
-    WEST_LVII_DOWN = (seeker_row + 1, seeker_col - 2) if seeker_row + 1 < len(matrix) and seeker_col - 2 >= 0 else None
 
     if NORTHWEST_LVI:
         if tmpMatrix[NORTHWEST_LVI[0]][NORTHWEST_LVI[1]] == 1:
@@ -56,16 +45,6 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
                         for j in range(start_vision_col, NORTHWEST_LVII[1]):
                             tmpMatrix[i][j] = -1
     
-    if NORTH_LVI:
-        if tmpMatrix[NORTH_LVI[0]][NORTH_LVI[1]] == 1:
-            for i in range(start_vision_row, NORTH_LVI[0]):
-                tmpMatrix[i][seeker_col] = -1
-        else:
-            if NORTH_LVII:
-                if tmpMatrix[NORTH_LVII[0]][NORTH_LVII[1]] == 1:
-                    for i in range(start_vision_row, NORTH_LVII[0]):
-                        tmpMatrix[i][seeker_col] = -1
-    
     if NORTHEAST_LVI:
         if tmpMatrix[NORTHEAST_LVI[0]][NORTHEAST_LVI[1]] == 1:
             for i in range(start_vision_row, NORTHEAST_LVI[0]):
@@ -77,16 +56,6 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
                     for i in range(start_vision_row, NORTHEAST_LVII[0]):
                         for j in range(seeker_col + 1, end_vision_col):
                             tmpMatrix[i][j] = -1
-
-    if EAST_LVI:
-        if tmpMatrix[EAST_LVI[0]][EAST_LVI[1]] == 1:
-            for j in range(seeker_col + 1, end_vision_col):
-                tmpMatrix[seeker_row][j] = -1
-        else:
-            if EAST_LVII:
-                if tmpMatrix[EAST_LVII[0]][EAST_LVII[1]] == 1:
-                    for j in range(seeker_col + 1, end_vision_col):
-                        tmpMatrix[seeker_row][j] = -1
     
     if SOUTHEAST_LVI:
         if tmpMatrix[SOUTHEAST_LVI[0]][SOUTHEAST_LVI[1]] == 1:
@@ -100,16 +69,6 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
                         for j in range(seeker_col + 1, end_vision_col):
                             tmpMatrix[i][j] = -1
     
-    if SOUTH_LVI:
-        if tmpMatrix[SOUTH_LVI[0]][SOUTH_LVI[1]] == 1:
-            for i in range(seeker_row + 1, end_vision_row):
-                tmpMatrix[i][seeker_col] = -1
-        else:
-            if SOUTH_LVII:
-                if tmpMatrix[SOUTH_LVII[0]][SOUTH_LVII[1]] == 1:
-                    for i in range(seeker_row + 1, end_vision_row):
-                        tmpMatrix[i][seeker_col] = -1
-    
     if SOUTHWEST_LVI:
         if tmpMatrix[SOUTHWEST_LVI[0]][SOUTHWEST_LVI[1]] == 1:
             for i in range(seeker_row + 1, end_vision_row):
@@ -121,65 +80,118 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
                     for i in range(seeker_row + 1, end_vision_row):
                         for j in range(start_vision_col, SOUTHWEST_LVII[1]):
                             tmpMatrix[i][j] = -1
-    
-    if WEST_LVI:
-        if tmpMatrix[WEST_LVI[0]][WEST_LVI[1]] == 1:
-            for j in range(start_vision_col, WEST_LVI[1]):
-                tmpMatrix[seeker_row][j] = -1
-        else:
-            if WEST_LVII:
-                if tmpMatrix[WEST_LVII[0]][WEST_LVII[1]] == 1:
-                    for j in range(start_vision_col, WEST_LVII[1]):
-                        tmpMatrix[seeker_row][j] = -1
 
-    if NORTH_LVII_LEFT:
-        if tmpMatrix[NORTH_LVII_LEFT[0]][NORTH_LVII_LEFT[1]] == 1:
-            if NORTH_LVII_LEFT[0] - 1 >= 0 and NORTH_LVII_LEFT[1] - 1 >= 0:
-                tmpMatrix[NORTH_LVII_LEFT[0] - 1][NORTH_LVII_LEFT[1] - 1] = -1
+    if top_length == 3:
+        NORTH_LVI = (seeker_row - 1, seeker_col)
+        if tmpMatrix[NORTH_LVI[0]][NORTH_LVI[1]] == 1:
+            tmpMatrix[NORTH_LVI[0] - 1][NORTH_LVI[1]] = -1
+            tmpMatrix[NORTH_LVI[0] - 2][NORTH_LVI[1]] = -1
+            if left_length >= 1:
+                tmpMatrix[NORTH_LVI[0] - 2][NORTH_LVI[1] - 1] = -1
+            if right_length >= 1:
+                tmpMatrix[NORTH_LVI[0] - 2][NORTH_LVI[1] + 1] = -1
+        else:
+            NORTH_LVII = (seeker_row - 2, seeker_col)
+            if tmpMatrix[NORTH_LVII[0]][NORTH_LVII[1]] == 1:
+                tmpMatrix[NORTH_LVII[0] - 1][NORTH_LVII[1]] = -1
+        if left_length == 3:
+            NORTH_LVII_LEFT = (seeker_row - 2, seeker_col - 1)
+            if tmpMatrix[NORTH_LVII_LEFT[0]][NORTH_LVII_LEFT[1]] == 1:
                 tmpMatrix[NORTH_LVII_LEFT[0] - 1][NORTH_LVII_LEFT[1]] = -1
-    
-    if NORTH_LVII_RIGHT:
-        if tmpMatrix[NORTH_LVII_RIGHT[0]][NORTH_LVII_RIGHT[1]] == 1:
-            if NORTH_LVII_RIGHT[0] - 1 >= 0 and NORTH_LVII_RIGHT[1] + 1 < len(matrix[0]):
-                tmpMatrix[NORTH_LVII_RIGHT[0] - 1][NORTH_LVII_RIGHT[1] + 1] = -1
+                tmpMatrix[NORTH_LVII_LEFT[0] - 1][NORTH_LVII_LEFT[1] - 1] = -1
+        if right_length == 3:
+            NORTH_LVII_RIGHT = (seeker_row - 2, seeker_col + 1)
+            if tmpMatrix[NORTH_LVII_RIGHT[0]][NORTH_LVII_RIGHT[1]] == 1:
                 tmpMatrix[NORTH_LVII_RIGHT[0] - 1][NORTH_LVII_RIGHT[1]] = -1
-    
-    if SOUTH_LVII_LEFT:
-        if tmpMatrix[SOUTH_LVII_LEFT[0]][SOUTH_LVII_LEFT[1]] == 1:
-            if SOUTH_LVII_LEFT[0] + 1 < len(matrix) and SOUTH_LVII_LEFT[1] - 1 >= 0:
-                tmpMatrix[SOUTH_LVII_LEFT[0] + 1][SOUTH_LVII_LEFT[1] - 1] = -1
+                tmpMatrix[NORTH_LVII_RIGHT[0] - 1][NORTH_LVII_RIGHT[1] + 1] = -1
+    elif top_length == 2:
+        NORTH_LVI = (seeker_row - 1, seeker_col)
+        if tmpMatrix[NORTH_LVI[0]][NORTH_LVI[1]] == 1:
+            tmpMatrix[NORTH_LVI[0] - 1][NORTH_LVI[1]] = -1
+
+    if bottom_length == 3:
+        SOUTH_LVI = (seeker_row + 1, seeker_col)
+        if tmpMatrix[SOUTH_LVI[0]][SOUTH_LVI[1]] == 1:
+            tmpMatrix[SOUTH_LVI[0] + 1][SOUTH_LVI[1]] = -1
+            tmpMatrix[SOUTH_LVI[0] + 2][SOUTH_LVI[1]] = -1
+            if left_length >= 1:
+                tmpMatrix[SOUTH_LVI[0] + 2][SOUTH_LVI[1] - 1] = -1
+            if right_length >= 1:
+                tmpMatrix[SOUTH_LVI[0] + 2][SOUTH_LVI[1] + 1] = -1
+        else:
+            SOUTH_LVII = (seeker_row + 2, seeker_col)
+            if tmpMatrix[SOUTH_LVII[0]][SOUTH_LVII[1]] == 1:
+                tmpMatrix[SOUTH_LVII[0] + 1][SOUTH_LVII[1]] = -1
+        if left_length == 3:
+            SOUTH_LVII_LEFT = (seeker_row + 2, seeker_col - 1)
+            if tmpMatrix[SOUTH_LVII_LEFT[0]][SOUTH_LVII_LEFT[1]] == 1:
                 tmpMatrix[SOUTH_LVII_LEFT[0] + 1][SOUTH_LVII_LEFT[1]] = -1
-    
-    if SOUTH_LVII_RIGHT:
-        if tmpMatrix[SOUTH_LVII_RIGHT[0]][SOUTH_LVII_RIGHT[1]] == 1:
-            if SOUTH_LVII_RIGHT[0] + 1 < len(matrix) and SOUTH_LVII_RIGHT[1] + 1 < len(matrix[0]):
-                tmpMatrix[SOUTH_LVII_RIGHT[0] + 1][SOUTH_LVII_RIGHT[1] + 1] = -1
+                tmpMatrix[SOUTH_LVII_LEFT[0] + 1][SOUTH_LVII_LEFT[1] - 1] = -1
+        if right_length == 3:
+            SOUTH_LVII_RIGHT = (seeker_row + 2, seeker_col + 1)
+            if tmpMatrix[SOUTH_LVII_RIGHT[0]][SOUTH_LVII_RIGHT[1]] == 1:
                 tmpMatrix[SOUTH_LVII_RIGHT[0] + 1][SOUTH_LVII_RIGHT[1]] = -1
+                tmpMatrix[SOUTH_LVII_RIGHT[0] + 1][SOUTH_LVII_RIGHT[1] + 1] = -1
+    elif bottom_length == 2:
+        SOUTH_LVI = (seeker_row + 1, seeker_col)
+        if tmpMatrix[SOUTH_LVI[0]][SOUTH_LVI[1]] == 1:
+            tmpMatrix[SOUTH_LVI[0] + 1][SOUTH_LVI[1]] = -1
     
-    if EAST_LVII_UP:
-        if tmpMatrix[EAST_LVII_UP[0]][EAST_LVII_UP[1]] == 1:
-            if EAST_LVII_UP[0] - 1 >= 0 and EAST_LVII_UP[1] + 1 < len(matrix[0]):
-                tmpMatrix[EAST_LVII_UP[0] - 1][EAST_LVII_UP[1] + 1] = -1
-                tmpMatrix[EAST_LVII_UP[0]][EAST_LVII_UP[1] + 1] = -1
+    if left_length == 3:
+        WEST_LVI = (seeker_row, seeker_col - 1)
+        if tmpMatrix[WEST_LVI[0]][WEST_LVI[1]] == 1:
+            tmpMatrix[WEST_LVI[0]][WEST_LVI[1] - 1] = -1
+            tmpMatrix[WEST_LVI[0]][WEST_LVI[1] - 2] = -1
+            if top_length >= 1:
+                tmpMatrix[WEST_LVI[0] - 1][WEST_LVI[1] - 2] = -1
+            if bottom_length >= 1:
+                tmpMatrix[WEST_LVI[0] + 1][WEST_LVI[1] - 2] = -1
+        else:
+            WEST_LVII = (seeker_row, seeker_col - 2)
+            if tmpMatrix[WEST_LVII[0]][WEST_LVII[1]] == 1:
+                tmpMatrix[WEST_LVII[0]][WEST_LVII[1] - 1] = -1
+        if top_length == 3:
+            WEST_LVII_TOP = (seeker_row - 1, seeker_col - 2)
+            if tmpMatrix[WEST_LVII_TOP[0]][WEST_LVII_TOP[1]] == 1:
+                tmpMatrix[WEST_LVII_TOP[0]][WEST_LVII_TOP[1] - 1] = -1
+                tmpMatrix[WEST_LVII_TOP[0] - 1][WEST_LVII_TOP[1] - 1] = -1
+        if bottom_length == 3:
+            WEST_LVII_BOTTOM = (seeker_row + 1, seeker_col - 2)
+            if tmpMatrix[WEST_LVII_BOTTOM[0]][WEST_LVII_BOTTOM[1]] == 1:
+                tmpMatrix[WEST_LVII_BOTTOM[0]][WEST_LVII_BOTTOM[1] - 1] = -1
+                tmpMatrix[WEST_LVII_BOTTOM[0] + 1][WEST_LVII_BOTTOM[1] - 1] = -1
+    elif left_length == 2:
+        WEST_LVI = (seeker_row, seeker_col - 1)
+        if tmpMatrix[WEST_LVI[0]][WEST_LVI[1]] == 1:
+            tmpMatrix[WEST_LVI[0]][WEST_LVI[1] - 1] = -1
     
-    if EAST_LVII_DOWN:
-        if tmpMatrix[EAST_LVII_DOWN[0]][EAST_LVII_DOWN[1]] == 1:
-            if EAST_LVII_DOWN[0] + 1 < len(matrix) and EAST_LVII_DOWN[1] + 1 < len(matrix[0]):
-                tmpMatrix[EAST_LVII_DOWN[0] + 1][EAST_LVII_DOWN[1] + 1] = -1
-                tmpMatrix[EAST_LVII_DOWN[0]][EAST_LVII_DOWN[1] + 1] = -1
-    
-    if WEST_LVII_UP:
-        if tmpMatrix[WEST_LVII_UP[0]][WEST_LVII_UP[1]] == 1:
-            if WEST_LVII_UP[0] - 1 >= 0 and WEST_LVII_UP[1] - 1 >= 0:
-                tmpMatrix[WEST_LVII_UP[0] - 1][WEST_LVII_UP[1] - 1] = -1
-                tmpMatrix[WEST_LVII_UP[0]][WEST_LVII_UP[1] - 1] = -1
-    
-    if WEST_LVII_DOWN:
-        if tmpMatrix[WEST_LVII_DOWN[0]][WEST_LVII_DOWN[1]] == 1:
-            if WEST_LVII_DOWN[0] + 1 < len(matrix) and WEST_LVII_DOWN[1] - 1 >= 0:
-                tmpMatrix[WEST_LVII_DOWN[0] + 1][WEST_LVII_DOWN[1] - 1] = -1
-                tmpMatrix[WEST_LVII_DOWN[0]][WEST_LVII_DOWN[1] - 1] = -1
-    
+    if right_length == 3:
+        EAST_LVI = (seeker_row, seeker_col + 1)
+        if tmpMatrix[EAST_LVI[0]][EAST_LVI[1]] == 1:
+            tmpMatrix[EAST_LVI[0]][EAST_LVI[1] + 1] = -1
+            tmpMatrix[EAST_LVI[0]][EAST_LVI[1] + 2] = -1
+            if top_length >= 1:
+                tmpMatrix[EAST_LVI[0] - 1][EAST_LVI[1] + 2] = -1
+            if bottom_length >= 1:
+                tmpMatrix[EAST_LVI[0] + 1][EAST_LVI[1] + 2] = -1
+        else:
+            EAST_LVII = (seeker_row, seeker_col + 2)
+            if tmpMatrix[EAST_LVII[0]][EAST_LVII[1]] == 1:
+                tmpMatrix[EAST_LVII[0]][EAST_LVII[1] + 1] = -1
+        if top_length == 3:
+            EAST_LVII_TOP = (seeker_row - 1, seeker_col + 2)
+            if tmpMatrix[EAST_LVII_TOP[0]][EAST_LVII_TOP[1]] == 1:
+                tmpMatrix[EAST_LVII_TOP[0]][EAST_LVII_TOP[1] + 1] = -1
+                tmpMatrix[EAST_LVII_TOP[0] - 1][EAST_LVII_TOP[1] + 1] = -1
+        if bottom_length == 3:
+            EAST_LVII_BOTTOM = (seeker_row + 1, seeker_col + 2)
+            if tmpMatrix[EAST_LVII_BOTTOM[0]][EAST_LVII_BOTTOM[1]] == 1:
+                tmpMatrix[EAST_LVII_BOTTOM[0]][EAST_LVII_BOTTOM[1] + 1] = -1
+                tmpMatrix[EAST_LVII_BOTTOM[0] + 1][EAST_LVII_BOTTOM[1] + 1] = -1
+    elif right_length == 2:
+        EAST_LVI = (seeker_row, seeker_col + 1)
+        if tmpMatrix[EAST_LVI[0]][EAST_LVI[1]] == 1:
+            tmpMatrix[EAST_LVI[0]][EAST_LVI[1] + 1] = -1
 
     updated_matrix = [row[:] for row in matrix]
     for i in range(start_vision_row, end_vision_row):
