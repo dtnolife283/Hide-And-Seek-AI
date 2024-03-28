@@ -48,36 +48,36 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
     if NORTHEAST_LVI:
         if tmpMatrix[NORTHEAST_LVI[0]][NORTHEAST_LVI[1]] == 1:
             for i in range(start_vision_row, NORTHEAST_LVI[0]):
-                for j in range(seeker_col + 1, end_vision_col):
+                for j in range(NORTHEAST_LVI[1] + 1, end_vision_col):
                     tmpMatrix[i][j] = -1
         else:
             if NORTHEAST_LVII:
                 if tmpMatrix[NORTHEAST_LVII[0]][NORTHEAST_LVII[1]] == 1:
                     for i in range(start_vision_row, NORTHEAST_LVII[0]):
-                        for j in range(seeker_col + 1, end_vision_col):
+                        for j in range(NORTHEAST_LVII + 1, end_vision_col):
                             tmpMatrix[i][j] = -1
     
     if SOUTHEAST_LVI:
         if tmpMatrix[SOUTHEAST_LVI[0]][SOUTHEAST_LVI[1]] == 1:
-            for i in range(seeker_row + 1, end_vision_row):
-                for j in range(seeker_col + 1, end_vision_col):
+            for i in range(SOUTHEAST_LVI[0] + 1, end_vision_row):
+                for j in range(SOUTHEAST_LVI[1] + 1, end_vision_col):
                     tmpMatrix[i][j] = -1
         else:
             if SOUTHEAST_LVII:
                 if tmpMatrix[SOUTHEAST_LVII[0]][SOUTHEAST_LVII[1]] == 1:
-                    for i in range(seeker_row + 1, end_vision_row):
-                        for j in range(seeker_col + 1, end_vision_col):
+                    for i in range(SOUTHEAST_LVII[0] + 1, end_vision_row):
+                        for j in range(SOUTHEAST_LVII[1] + 1, end_vision_col):
                             tmpMatrix[i][j] = -1
     
     if SOUTHWEST_LVI:
         if tmpMatrix[SOUTHWEST_LVI[0]][SOUTHWEST_LVI[1]] == 1:
-            for i in range(seeker_row + 1, end_vision_row):
+            for i in range(SOUTHWEST_LVI[0] + 1, end_vision_row):
                 for j in range(start_vision_col, SOUTHWEST_LVI[1]):
                     tmpMatrix[i][j] = -1
         else:
             if SOUTHWEST_LVII:
                 if tmpMatrix[SOUTHWEST_LVII[0]][SOUTHWEST_LVII[1]] == 1:
-                    for i in range(seeker_row + 1, end_vision_row):
+                    for i in range(SOUTHWEST_LVII[1] + 1, end_vision_row):
                         for j in range(start_vision_col, SOUTHWEST_LVII[1]):
                             tmpMatrix[i][j] = -1
 
@@ -201,5 +201,5 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
             elif tmpMatrix[i][j] == seeker_or_hider:
                 updated_matrix[i][j] = seeker_or_hider
             else:
-                updated_matrix[i][j] = 10
+                updated_matrix[i][j] = 5
     return updated_matrix
