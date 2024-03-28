@@ -201,5 +201,5 @@ def calculate_vision(matrix, seeker_or_hider, vision_range):
             elif tmpMatrix[i][j] == seeker_or_hider:
                 updated_matrix[i][j] = seeker_or_hider
             else:
-                updated_matrix[i][j] = 5
+                updated_matrix[i][j] = 10
     return updated_matrix
