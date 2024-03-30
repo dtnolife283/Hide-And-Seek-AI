@@ -377,7 +377,7 @@ class GUI:
 
             pygame.display.flip()
         matrix, height, width = self.level_screen()
-        map_matrix = Map(matrix, height, width, 0)
+        map_matrix = Map(matrix, height, width, 0, None)
         self.solve_screen(map_matrix)
 
 

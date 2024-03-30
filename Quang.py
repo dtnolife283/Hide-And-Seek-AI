@@ -48,13 +48,13 @@ class PriorityQueueElement:
         self.priority = priority
         self.value = value
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'PriorityQueueElement'):
         return self.priority < other.priority
 
 
 class Map:
     # constructor
-    def __init__(self, board, row, col, weight):  
+    def __init__(self, board, row, col, weight, parent):  
         self.board = board
         self.row = row
         self.col = col
@@ -80,6 +80,7 @@ class Map:
                     hider = [hiderRow, hiderCol]
                     self.hiderPosition.append(hider)
 
+        self.parent = parent
 
     def __str__(self):
         result = ""
@@ -426,11 +427,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol - 1] = tmpBoard[seekerRow - 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow - 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -447,11 +448,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol] = tmpBoard[seekerRow - 1][seekerCol], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow - 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -467,11 +468,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol + 1] = tmpBoard[seekerRow - 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow - 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -485,13 +486,13 @@ class Map:
                 if hider[0] == seekerRow and hider[1] == seekerCol + 1:
                     tmpBoard[hider[0]][hider[1]] = -1
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol + 1] = tmpBoard[seekerRow][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     hider[0] = -10
                     hider[1] = -10
                     return resMap
             tmpBoard[seekerRow][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -507,11 +508,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol + 1] = tmpBoard[seekerRow + 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow + 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -527,11 +528,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol] = tmpBoard[seekerRow + 1][seekerCol], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow + 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -547,11 +548,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol - 1] = tmpBoard[seekerRow + 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow + 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -567,11 +568,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol - 1] = tmpBoard[seekerRow][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -607,6 +608,7 @@ class Map:
     #not done yet
     def A_Star(self, goalRow, goalCol, type, path):
         tmp = []
+        self.getVision()
         if self.checkAnnoucementorHider(tmp):
             type = 1
             return tmp
@@ -615,25 +617,39 @@ class Map:
             return None
         visited = set()
         visited.add(tuple(self.seekerPosition))
-        queue = [PriorityQueueElement]
+        queue = []
         heapq.heapify(queue)
-        heapq.heappush(queue, PriorityQueueElement(self.weight + findDiagonalDistance(self.seekerPosition[0], self.seekerPosition[1], goalRow, goalCol), self))
+        priorityValue = self.weight + findDiagonalDistance(self.seekerPosition[0], self.seekerPosition[1], goalRow, goalCol)
+        newElement = PriorityQueueElement(priorityValue, self)
+        heapq.heappush(queue, newElement)
+        
         
         while (len(queue) != 0):
-            cur = heapq.heappop()
+            cur = heapq.heappop(queue).value
+            
+            print(cur)
             newMoves = cur.moveSeeker()
+            if newMoves == []:
+                return None
+            
             for state in newMoves:
+                state.getVision()
                 if state.checkAnnoucementorHider(tmp):
+                    print(state)
                     type = 2
                     while not state.parent:
                         path.append(state)
                         state = state.parent
                     path.reverse()
                     return tmp
-                if tuple(cur.seekerPosition) in visited:
+                
+                if tuple(state.seekerPosition) in visited:
                     continue
+                
                 state.parent = cur
-                heapq.heapush(queue, PriorityQueueElement(state.weight + findDiagonalDistance(state.seekerPosition[0], state.SeekerPosition[1], goalRow, goalCol), state))
+                priorityValue = state.weight + findDiagonalDistance(state.seekerPosition[0], state.seekerPosition[1], goalRow, goalCol)
+                newElement = PriorityQueueElement(priorityValue, state)
+                heapq.heappush(queue, newElement)
                 visited.add(tuple(state.seekerPosition))
         return None
         
