@@ -236,10 +236,14 @@ class GUI:
                 #                 sys.exit()
                 #         pygame.display.flip()
 
-                map_matrix = map_matrix.moveSeekerII()
-                map_matrix.getVision()
-                matrix = map_matrix.board
-                self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                # map_matrix = map_matrix.moveSeekerII()
+                # map_matrix.getVision()
+                # matrix = map_matrix.board
+                path = []
+                type = 0
+                type = map_matrix.A_Star(9, 24, type, path)
+                for matrix in path:
+                    self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
 
                 remaining_hiders = 0
                 for hider in map_matrix.hiderPosition:
