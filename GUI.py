@@ -211,6 +211,57 @@ class GUI:
                         if button_rect.collidepoint(mouse_x, mouse_y):
                             running = False
                 pygame.display.flip()
+            
+            running = True
+            while running:
+                # tmp = map_matrix.moveSeekerII()
+                # if tmp == None:
+                #     pos = []
+                #     for i in range(map_matrix.row):
+                #         for j in range(map_matrix.col):
+                #             if map_matrix.board[i][j] == 0:
+                #                 pos.append((i, j))
+                #     pos = random.choice(pos)
+                #     running = False
+
+                #     while running:
+                #         map_matrix = map_matrix.moveToDes(pos[0], pos[1])
+                #         map_matrix.getVision()
+                #         matrix = map_matrix.board
+                #         self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+
+                #         for event in pygame.event.get():
+                #             if event.type == pygame.QUIT:
+                #                 pygame.quit()
+                #                 sys.exit()
+                #         pygame.display.flip()
+
+                map_matrix = map_matrix.moveSeekerII()
+                map_matrix.getVision()
+                matrix = map_matrix.board
+                self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+
+                remaining_hiders = 0
+                for hider in map_matrix.hiderPosition:
+                    if hider[0] != -10 and hider[1] != -10:
+                        remaining_hiders += 1
+
+                if remaining_hiders == 0:
+                    running = False
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                pygame.display.flip()
+
+            running = True
+            while running:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                pygame.display.flip()
 
     def level_screen(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))

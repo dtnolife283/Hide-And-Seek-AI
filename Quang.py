@@ -1,4 +1,6 @@
 # sub function for calculating in class Map
+import random
+
 def checkWall(row, col, board, maxRow, maxCol):
     if (row < 0 or row >= maxRow or col < 0 or col >= maxCol):
         return False
@@ -65,12 +67,15 @@ class Map:
 
         hiderRow = 0
         hiderCol = 0
+        self.hiderPosition = []
         for i in range (row):
             for j in range (col):
                 if (board[i][j] == 2):
                     hiderRow = i
                     hiderCol = j
-        self.hiderPosition = [hiderRow, hiderCol]
+                    hider = [hiderRow, hiderCol]
+                    self.hiderPosition.append(hider)
+
 
     def __str__(self):
         result = ""
@@ -90,8 +95,8 @@ class Map:
             for j in range (col - 3, col + 4):
                 if j < 0 or j >= self.col:
                     continue
-                if self.board[i][j] != 1 and self.board[i][j] != 3:
-                    self.board[i][j] += 20
+                if self.board[i][j] != 1 and self.board[i][j] != 3 and self.board[i][j] != 2 and self.board[i][j] != 4:
+                    self.board[i][j] = 20
         # di tu trong ra, neu gap wall thi chinh nhung o vision co the ve vi tri cu
         
         # LV1: top left
@@ -368,8 +373,17 @@ class Map:
 
         if not checkUnValidCell(seekerRow - 1, seekerCol - 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow - 1 and hider[1] == seekerCol - 1:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol - 1] = tmpBoard[seekerRow - 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
+                    hider[0] = -10
+                    hider[1] = -10
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol - 1] = tmpBoard[seekerRow - 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
@@ -379,8 +393,17 @@ class Map:
 
         if not checkUnValidCell(seekerRow - 1, seekerCol, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow - 1 and hider[1] == seekerCol:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol] = tmpBoard[seekerRow - 1][seekerCol], tmpBoard[seekerRow][seekerCol]
+                    hider[0] = -10
+                    hider[1] = -10
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol] = tmpBoard[seekerRow - 1][seekerCol], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
@@ -389,8 +412,17 @@ class Map:
         
         if not checkUnValidCell(seekerRow - 1, seekerCol + 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow - 1 and hider[1] == seekerCol + 1:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol + 1] = tmpBoard[seekerRow - 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
+                    hider[0] = -10
+                    hider[1] = -10
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol + 1] = tmpBoard[seekerRow - 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol] 
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
@@ -399,8 +431,17 @@ class Map:
         
         if not checkUnValidCell(seekerRow, seekerCol + 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow and hider[1] == seekerCol + 1:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol + 1] = tmpBoard[seekerRow][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    hider[0] = -10
+                    hider[1] = -10
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol + 1] = tmpBoard[seekerRow][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
@@ -409,8 +450,17 @@ class Map:
         
         if not checkUnValidCell(seekerRow + 1, seekerCol + 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow + 1 and hider[1] == seekerCol + 1:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol + 1] = tmpBoard[seekerRow + 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
+                    hider[0] = -10
+                    hider[1] = -10
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol + 1] = tmpBoard[seekerRow + 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
@@ -419,8 +469,17 @@ class Map:
         
         if not checkUnValidCell(seekerRow + 1, seekerCol, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow + 1 and hider[1] == seekerCol:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol] = tmpBoard[seekerRow + 1][seekerCol], tmpBoard[seekerRow][seekerCol]
+                    hider[0] = -10
+                    hider[1] = -10
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol] = tmpBoard[seekerRow + 1][seekerCol], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
@@ -429,8 +488,17 @@ class Map:
         
         if not checkUnValidCell(seekerRow + 1, seekerCol - 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow + 1 and hider[1] == seekerCol - 1:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol - 1] = tmpBoard[seekerRow + 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
+                    hider[0] = -10
+                    hider[1] = -10
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol - 1] = tmpBoard[seekerRow + 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
@@ -439,31 +507,59 @@ class Map:
         
         if not checkUnValidCell(seekerRow, seekerCol - 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            for hider in self.hiderPosition:
+                if hider[0] == seekerRow and hider[1] == seekerCol - 1:
+                    tmpBoard[hider[0]][hider[1]] = -1
+                    tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol - 1] = tmpBoard[seekerRow][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
+                    hider[0] = -10
+                    hider[1] = -10
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0)
+                    return resMap
             tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol - 1] = tmpBoard[seekerRow][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
                     if tmpMap.board[row][col] == 20:
                         tmpMap.board[row][col] = -1
             newMap.append(tmpMap)
         
-        # Count -1 cell
-        for i in range (len(newMap)):
-            newMap[i].weight += newMap[i].board.count(-1)
-
-        # Find the best move
-        max = newMap[0].weight
+        for i in range(len(newMap)):
+            newMap[i].weight = calc_value_smaller_20(newMap[i].board, maxRow, maxCol)
+        
         pos = 0
-        for i in range (1, len(newMap)):
+        max = newMap[0].weight
+        for i in range(1, len(newMap)):
             if newMap[i].weight > max:
                 max = newMap[i].weight
                 pos = i
-        return newMap[pos]
-        
-        
+
+        newMaxMap = []
+        for i in range(len(newMap)):
+            if newMap[i].weight == max:
+                newMaxMap.append(newMap[i])
+
+        # if max == self.weight:
+        #     return None
+
+        if len(newMaxMap) == 1:
+            return newMaxMap[0]
+        else:
+            # Move randomly
+            pos = random.randint(0, len(newMaxMap) - 1)
+            return newMaxMap[pos]
                     
     #not done yet
     def A_Star(self, goalRow, goalCol):
         if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
             return 
         
+        
+def calc_value_smaller_20(board, row, col):
+    res = 0
+    for i in range (row):
+        for j in range (col):
+            if board[i][j] <= 20 and board[i][j] != 1 and board[i][j] != 3 and board[i][j] != 2 and board[i][j] != 4 and board[i][j] != 0:
+                res += 1
+    return res
+
