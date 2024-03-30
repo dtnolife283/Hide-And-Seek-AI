@@ -70,7 +70,7 @@ class GUI:
                 y = start_y + i * cell_size
                 cell = matrix[i][j]
 
-                if cell == 3:
+                if cell % 20 == 3:
                     current_dir = os.path.dirname(os.path.abspath(__file__))
                     directory = "IMAGES"
                     image_path = os.path.join(current_dir, directory)
@@ -79,7 +79,7 @@ class GUI:
                     image = pygame.transform.scale(image, (cell_size, cell_size))
                     # Blit image onto screen
                     self.screen.blit(image, (x, y))
-                elif cell == 2:
+                elif cell % 20 == 2:
                     current_dir = os.path.dirname(os.path.abspath(__file__))
                     directory = "IMAGES"
                     image_path = os.path.join(current_dir, directory)
@@ -89,11 +89,11 @@ class GUI:
                     # Blit image onto screen
                     self.screen.blit(image, (x, y))
                 else:
-                    if cell == 0:
+                    if cell == 0 or cell == -1:
                         color = self.WHITE
                     elif cell == 1:
                         color = self.BLACK
-                    elif cell >= 20:
+                    elif cell > 10:
                         color = self.YELLOW
                     pygame.draw.rect(self.screen, color, (x, y, cell_size, cell_size))
         pygame.display.flip()

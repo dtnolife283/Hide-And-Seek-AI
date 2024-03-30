@@ -358,6 +358,110 @@ class Map:
             newMap.append(tmpMap)
         return newMap
         
+
+    def moveSeekerII(self): 
+        newMap = []
+        seekerRow = self.seekerPosition[0]
+        seekerCol = self.seekerPosition[1]
+        maxRow = self.row
+        maxCol = self.col
+
+        if not checkUnValidCell(seekerRow - 1, seekerCol - 1, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol - 1] = tmpBoard[seekerRow - 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+            
+
+        if not checkUnValidCell(seekerRow - 1, seekerCol, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol] = tmpBoard[seekerRow - 1][seekerCol], tmpBoard[seekerRow][seekerCol]
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+        
+        if not checkUnValidCell(seekerRow - 1, seekerCol + 1, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol + 1] = tmpBoard[seekerRow - 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol] 
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+        
+        if not checkUnValidCell(seekerRow, seekerCol + 1, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol + 1] = tmpBoard[seekerRow][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+        
+        if not checkUnValidCell(seekerRow + 1, seekerCol + 1, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol + 1] = tmpBoard[seekerRow + 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+        
+        if not checkUnValidCell(seekerRow + 1, seekerCol, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol] = tmpBoard[seekerRow + 1][seekerCol], tmpBoard[seekerRow][seekerCol]
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+        
+        if not checkUnValidCell(seekerRow + 1, seekerCol - 1, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol - 1] = tmpBoard[seekerRow + 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+        
+        if not checkUnValidCell(seekerRow, seekerCol - 1, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol - 1] = tmpBoard[seekerRow][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0)
+            for row in range(maxRow):
+                for col in range(maxCol):
+                    if tmpMap.board[row][col] == 20:
+                        tmpMap.board[row][col] = -1
+            newMap.append(tmpMap)
+        
+        # Count -1 cell
+        for i in range (len(newMap)):
+            newMap[i].weight += newMap[i].board.count(-1)
+
+        # Find the best move
+        max = newMap[0].weight
+        pos = 0
+        for i in range (1, len(newMap)):
+            if newMap[i].weight > max:
+                max = newMap[i].weight
+                pos = i
+        return newMap[pos]
+        
+        
+                    
     #not done yet
     def A_Star(self, goalRow, goalCol):
         if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
