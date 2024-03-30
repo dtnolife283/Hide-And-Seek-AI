@@ -246,7 +246,7 @@ class Map:
         return pos
 
     # Move seeker: return a list of new Map
-    def moveSeeker(self, goalRow, goalCol):
+    def moveSeeker(self):
         newMap = []
         seekerRow = self.seekerPosition[0]
         seekerCol = self.seekerPosition[1]
@@ -271,7 +271,7 @@ class Map:
             increaseWeight = 1
             if self.board[seekerRow - 1][seekerCol] == -1 + 20: 
                 increaseWeight = 2
-                tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol] = tmpBoard[seekerRow - 1][seekerCol], tmpBoard[seekerRow][seekerCol]
+            tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol] = tmpBoard[seekerRow - 1][seekerCol], tmpBoard[seekerRow][seekerCol]
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight)
             if tmpMap.checkAnnoucement():
                 newMap.clear()
