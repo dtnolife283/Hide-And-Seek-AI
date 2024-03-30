@@ -1,7 +1,8 @@
 import pygame
 import sys
 import os
-from Vision import *
+from Quang import *
+
 
 class GUI:
     def __init__(self, width, height):
@@ -92,7 +93,7 @@ class GUI:
                         color = self.WHITE
                     elif cell == 1:
                         color = self.BLACK
-                    elif cell == 10:
+                    elif cell >= 20:
                         color = self.YELLOW
                     pygame.draw.rect(self.screen, color, (x, y, cell_size, cell_size))
         pygame.display.flip()
@@ -140,77 +141,76 @@ class GUI:
 
         pygame.display.flip()
 
-    def solve_screen(self, matrix, HEIGHT, WIDTH):
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        directory = "IMAGES"
-        background_path = os.path.join(current_dir, directory)
-        background_path = os.path.join(background_path, "background.jpg")
-        self.background = pygame.image.load(background_path)
-        self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
-        self.screen.blit(self.background, (0, 0))
+    def solve_screen(self, map_matrix : Map):
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            directory = "IMAGES"
+            background_path = os.path.join(current_dir, directory)
+            background_path = os.path.join(background_path, "background.jpg")
+            self.background = pygame.image.load(background_path)
+            self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
+            self.screen.blit(self.background, (0, 0))
 
-        # Calculate button dimensions and positions
-        if self.level == 1:
-            font = pygame.font.Font(None, 50)
-            text_surface = font.render("Level 1", True, self.BLACK)
-            text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
-            self.screen.blit(text_surface, text_rect)
+            # Calculate button dimensions and positions
+            if self.level == 1:
+                font = pygame.font.Font(None, 50)
+                text_surface = font.render("Level 1", True, self.BLACK)
+                text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
+                self.screen.blit(text_surface, text_rect)
 
-        elif self.level == 2:
-            font = pygame.font.Font(None, 50)
-            text_surface = font.render("Level 2", True, self.BLACK)
-            text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
-            self.screen.blit(text_surface, text_rect)
+            elif self.level == 2:
+                font = pygame.font.Font(None, 50)
+                text_surface = font.render("Level 2", True, self.BLACK)
+                text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
+                self.screen.blit(text_surface, text_rect)
 
-        elif self.level == 3:
-            font = pygame.font.Font(None, 50)
-            text_surface = font.render("Level 3", True, self.BLACK)
-            text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
-            self.screen.blit(text_surface, text_rect)
+            elif self.level == 3:
+                font = pygame.font.Font(None, 50)
+                text_surface = font.render("Level 3", True, self.BLACK)
+                text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
+                self.screen.blit(text_surface, text_rect)
 
-        elif self.level == 4:
-            font = pygame.font.Font(None, 50)
-            text_surface = font.render("Level 4", True, self.BLACK)
-            text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
-            self.screen.blit(text_surface, text_rect)
-        
-        matrix = calculate_vision(matrix, 3, 3)
+            elif self.level == 4:
+                font = pygame.font.Font(None, 50)
+                text_surface = font.render("Level 4", True, self.BLACK)
+                text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
+                self.screen.blit(text_surface, text_rect)
+            
+            map_matrix.getVision()
+            matrix = map_matrix.board
 
-        partition = self.WIDTH // 16
-        start_x_matrix = partition * 0.5
-        start_y_matrix = partition * 1.5
-        end_x_matrix = partition * 11.5
-        end_y_matrix = partition * 8.5
-        self.draw_matrix(matrix, HEIGHT, WIDTH, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
 
-        start_x_note = partition * 12
-        start_y_note = partition * 1.5
-        end_x_note = partition * 15.5
-        end_y_note = partition * 8.5
-        self.draw_note(start_x_note, start_y_note, end_x_note, end_y_note)
+            partition = self.WIDTH // 16
+            start_x_matrix = partition * 0.5
+            start_y_matrix = partition * 1.5
+            end_x_matrix = partition * 11.5
+            end_y_matrix = partition * 8.5
+            self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
 
-        running = True
-        while running:
-            button_y = end_y_note - 70
-            button_x = start_x_note + 90
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            button_rect = pygame.Rect(button_x, button_y , 100, 50)
-            hover = button_rect.collidepoint(mouse_x, mouse_y)
-            self.draw_button(button_x, button_y, "BEGIN", 100, 50, hover=hover)
+            start_x_note = partition * 12
+            start_y_note = partition * 1.5
+            end_x_note = partition * 15.5
+            end_y_note = partition * 8.5
+            self.draw_note(start_x_note, start_y_note, end_x_note, end_y_note)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    button_rect = pygame.Rect(button_x, button_y, 80, 50)
-                    if button_rect.collidepoint(mouse_x, mouse_y):
-                        running = False
-            pygame.display.flip()
-        
-        
+            running = True
+            while running:
+                button_y = end_y_note - 70
+                button_x = start_x_note + 90
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                button_rect = pygame.Rect(button_x, button_y , 100, 50)
+                hover = button_rect.collidepoint(mouse_x, mouse_y)
+                self.draw_button(button_x, button_y, "BEGIN", 100, 50, hover=hover)
 
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        button_rect = pygame.Rect(button_x, button_y, 80, 50)
+                        if button_rect.collidepoint(mouse_x, mouse_y):
+                            running = False
+                pygame.display.flip()
 
     def level_screen(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -322,7 +322,8 @@ class GUI:
 
             pygame.display.flip()
         matrix, height, width = self.level_screen()
-        self.solve_screen(matrix, height, width)
+        map_matrix = Map(matrix, height, width, 0)
+        self.solve_screen(map_matrix)
 
 
         pygame.quit()

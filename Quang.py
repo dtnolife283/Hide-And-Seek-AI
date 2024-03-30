@@ -1,6 +1,3 @@
-
-
-
 # sub function for calculating in class Map
 def checkWall(row, col, board, maxRow, maxCol):
     if (row < 0 or row >= maxRow or col < 0 or col >= maxCol):
@@ -16,13 +13,11 @@ def checkUnValidCell(row, col, board, maxRow, maxCol):
         return True
     return False
 
-
 def hideCell(row, col, board, maxRow, maxCol):
     if checkUnValidCell(row, col, board, maxRow, maxCol):
         return
     if board[row][col] > 10:
         board[row][col] -= 20
-
 
 def findDiagonalDistance(cur_row, cur_col, goal_row, goal_col):
     heightDistance = abs(cur_row - goal_row)
@@ -30,7 +25,6 @@ def findDiagonalDistance(cur_row, cur_col, goal_row, goal_col):
     if heightDistance > widthDistance:
         return heightDistance
     return widthDistance
-
 
 def findNumberOfWallAround(row, col, board, maxRow, maxCol):
     cnt = 0
@@ -44,17 +38,13 @@ def findNumberOfWallAround(row, col, board, maxRow, maxCol):
                 cnt += 1
     return cnt
 
-
 def calcCellValue(cur_row, cur_col, goal_row, goal_col, board, ROW, COL):
     if not(board[goal_row][goal_col] == 0 or board[goal_row][goal_col] == 2):
         return 0
     return findDiagonalDistance(cur_row, cur_col, goal_row, goal_col) + findNumberOfWallAround(goal_row, goal_col, board, ROW, COL) * (ROW + COL) // 18
 
-
-
 def calcHeuristic(cur_row, cur_col, goal_row, goal_col):
     return min(abs(cur_row - goal_row), abs(cur_col - goal_col))
-
 
 class Map:
     # constructor
@@ -372,36 +362,4 @@ class Map:
     def A_Star(self, goalRow, goalCol):
         if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
             return 
-        
-# read file
-def read_matrix_to_2d_list(filename):
-    with open(filename, 'r') as file:
-        # Read the first line to get the dimensions 
-        dimensions = [int(x) for x in file.readline().strip().split()]
-        ROW = dimensions[0]
-        COL = dimensions[1]
-        board = []
-        # Create an empty 2D list to store the matrix
-        for line in file:
-            # Split the line based on whitespace (you can adjust the delimiter if needed)
-            row = [int(x) for x in line.strip().split()]
-            board.append(row)
-        result = Map(board, ROW, COL, 0)
-        return result
-
-
-  
-def main():
-    Map = read_matrix_to_2d_list("board.txt")
-    Map.getVision()
-    print(Map)
-
-main()
-    
-
-
-    
-# class Lv1:
-#     def __init__(self, map):
-#         self.map = map
         
