@@ -86,22 +86,29 @@ class Map:
         result = ""
         for i in range (self.row):
             for j in range (self.col):
-                result += str(self.board[i][j]) + " "
+                if self.board[i][j] == 22 or self.board[i][j] == 24:
+                    result += str(self.board[i][j] - 20) + ' '
+                elif self.board[i][j] > 10:
+                    result += "S "
+                elif self.board[i][j] == -1:
+                    result += "V "
+                else:
+                    result += str(self.board[i][j]) + " "
             result += '\n'
         return result
 
     def getVision(self):
         row = self.seekerPosition[0]
         col = self.seekerPosition[1]
-        #Add ten to all free cell
+
         for i in range (row - 3, row + 4):
             if i < 0 or i >= self.row:
                 continue
             for j in range (col - 3, col + 4):
                 if j < 0 or j >= self.col:
                     continue
-                if self.board[i][j] != 1 and self.board[i][j] != 3 and self.board[i][j] != 2 and self.board[i][j] != 4:
-                    self.board[i][j] = 20
+                if self.board[i][j] != 3 and self.board[i][j] != 1:
+                    self.board[i][j] += 20
         # di tu trong ra, neu gap wall thi chinh nhung o vision co the ve vi tri cu
         
         # LV1: top left
@@ -230,15 +237,18 @@ class Map:
 
     # check for surrounding annoucement
     def checkAnnoucementorHider(self, des):
-        for i in range (self.row - 3, self.row + 4):
+        row = self.seekerPosition[0]
+        col = self.seekerPosition[1]
+        for i in range (row - 3, row + 4):
             if i < 0 or i >= self.row:
                 continue
-            for j in range (self.col - 3, self.col + 4):
+            for j in range (col - 3, col + 4):
                 if j < 0 or j >= self.col:
                     continue
-                if self.board[i][j] == 4 or self.board[i][j] == 2:
-                    des[0] = i
-                    des[1] = j
+                if self.board[i][j] == 24 or self.board[i][j] == 22:
+                    self.board[i][j] -= 20
+                    des.append(i)
+                    des.append(j)
                     return True
         return False
 
@@ -609,12 +619,15 @@ class Map:
     def A_Star(self, goalRow, goalCol, type, path):
         tmp = []
         self.getVision()
+
         if self.checkAnnoucementorHider(tmp):
             type = 1
             return tmp
+        
         if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
             type = 2
             return None
+        
         visited = set()
         visited.add(tuple(self.seekerPosition))
         queue = []
@@ -623,11 +636,8 @@ class Map:
         newElement = PriorityQueueElement(priorityValue, self)
         heapq.heappush(queue, newElement)
         
-        
         while (len(queue) != 0):
             cur = heapq.heappop(queue).value
-            
-            print(cur)
             newMoves = cur.moveSeeker()
             if newMoves == []:
                 return None
@@ -635,14 +645,19 @@ class Map:
             for state in newMoves:
                 state.getVision()
                 if state.checkAnnoucementorHider(tmp):
-                    print(state)
                     type = 2
-                    while not state.parent:
+                    while state.parent != None:
                         path.append(state)
                         state = state.parent
                     path.reverse()
                     return tmp
-                
+                if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
+                    type = 2
+                    while state.parent != None:
+                        path.append(state)
+                        state = state.parent
+                    path.reverse()
+                    return None
                 if tuple(state.seekerPosition) in visited:
                     continue
                 
@@ -651,6 +666,7 @@ class Map:
                 newElement = PriorityQueueElement(priorityValue, state)
                 heapq.heappush(queue, newElement)
                 visited.add(tuple(state.seekerPosition))
+                
         return None
         
         

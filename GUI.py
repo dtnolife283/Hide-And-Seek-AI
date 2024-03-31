@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 from Quang import *
-
+import time
 
 class GUI:
     def __init__(self, width, height):
@@ -239,27 +239,40 @@ class GUI:
                 # map_matrix = map_matrix.moveSeekerII()
                 # map_matrix.getVision()
                 # matrix = map_matrix.board
+
+                #test A*
                 path = []
                 type = 0
-                type = map_matrix.A_Star(9, 24, type, path)
+                
+                #test goal
+                goalPos = map_matrix.findMostValueCell()
+                print(goalPos)
+
+                #tmp = map_matrix.A_Star(0, 0, type, path)
+                #tmp = map_matrix.A_Star(9, 24, type, path)
+                tmp = map_matrix.A_Star(goalPos[0], goalPos[1], type, path)
+
                 for matrix in path:
-                    self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                    time.sleep(0.2)
+                    self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                #print(tmp)
+                running = False
+                # remaining_hiders = 0
+                # for hider in map_matrix.hiderPosition:
+                #     if hider[0] != -10 and hider[1] != -10:
+                #         remaining_hiders += 1
 
-                remaining_hiders = 0
-                for hider in map_matrix.hiderPosition:
-                    if hider[0] != -10 and hider[1] != -10:
-                        remaining_hiders += 1
+                # if remaining_hiders == 0:
+                #     running = False
 
-                if remaining_hiders == 0:
-                    running = False
+                # for event in pygame.event.get():
+                #     if event.type == pygame.QUIT:
+                #         pygame.quit()
+                #         sys.exit()
+                # pygame.display.flip()
 
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                pygame.display.flip()
-
-            running = True
+            running = False
+            # running = True
             while running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
