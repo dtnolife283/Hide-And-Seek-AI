@@ -636,16 +636,14 @@ class Map:
             pos = random.randint(0, len(newMaxMap) - 1)
             return newMaxMap[pos]
                     
-    #not done yet
-    def A_Star(self, goalRow, goalCol, type, path):
+    # tmp == None => path to goal, else is position of Annouce or Hider
+    def A_Star(self, goalRow, goalCol, path):
         tmp = []
 
         if self.checkAnnoucementorHider(tmp):
-            type = 1
             return tmp
         
         if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
-            type = 2
             return None
         
         visited = set()
@@ -665,14 +663,12 @@ class Map:
             for state in newMoves:
                 state.getVision()
                 if state.checkAnnoucementorHider(tmp):
-                    type = 2
                     while state.parent != None:
                         path.append(state)
                         state = state.parent
                     path.reverse()
                     return tmp
                 if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
-                    type = 2
                     while state.parent != None:
                         path.append(state)
                         state = state.parent
@@ -688,6 +684,44 @@ class Map:
                 visited.add(tuple(state.seekerPosition))
                 
         return None
+
+    # return true => find a path, false otherwise
+    def A_Star2(self, goalRow, goalCol, path):
+        
+        if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
+            return True
+        
+        visited = set()
+        visited.add(tuple(self.seekerPosition))
+        queue = []
+        heapq.heapify(queue)
+        priorityValue = self.weight + findDiagonalDistance(self.seekerPosition[0], self.seekerPosition[1], goalRow, goalCol)
+        newElement = PriorityQueueElement(priorityValue, self)
+        heapq.heappush(queue, newElement)
+        
+        while (len(queue) != 0):
+            cur = heapq.heappop(queue).value
+            newMoves = cur.moveSeeker()
+            
+            for state in newMoves:
+                state.getVision()
+                
+                if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
+                    while state.parent != None:
+                        path.append(state)
+                        state = state.parent
+                    path.reverse()
+                    return True
+                if tuple(state.seekerPosition) in visited:
+                    continue
+                
+                state.parent = cur
+                priorityValue = state.weight + findDiagonalDistance(state.seekerPosition[0], state.seekerPosition[1], goalRow, goalCol)
+                newElement = PriorityQueueElement(priorityValue, state)
+                heapq.heappush(queue, newElement)
+                visited.add(tuple(state.seekerPosition))
+                
+        return False
         
         
 def calc_value_smaller_20(board, row, col):

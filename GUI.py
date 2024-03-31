@@ -252,12 +252,28 @@ class GUI:
 
                 #tmp = map_matrix.A_Star(0, 0, type, path)
                 #tmp = map_matrix.A_Star(9, 24, type, path)
-                tmp = map_matrix.A_Star(goalPos[0], goalPos[1], type, path)
-
+                tmp = map_matrix.A_Star(0, 0, path)
                 for matrix in path:
-                    time.sleep(0.2)
-                    self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                #print(tmp)
+                        time.sleep(0.2)
+                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                map_matrix = path[len(path)-1]
+                print(map_matrix.seekerPosition)
+                if tmp != None:
+                    path.clear()
+                    if map_matrix.A_Star2(tmp[0], tmp[1], path):
+                        for matrix in path:
+                            time.sleep(0.2)
+                            self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                else:
+                    goalPos = map_matrix.findMostValueCell()
+                    print(goalPos)
+                    path.clear()
+                    tmp = map_matrix.A_Star(goalPos[0], goalPos[1], path)
+                    for matrix in path:
+                        time.sleep(0.2)
+                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+
+
                 running = False
                 # remaining_hiders = 0
                 # for hider in map_matrix.hiderPosition:
