@@ -89,8 +89,10 @@ class GUI:
                     # Blit image onto screen
                     self.screen.blit(image, (x, y))
                 else:
-                    if cell == 0 or cell == -1:
+                    if cell == 0:
                         color = self.WHITE
+                    elif cell == -1:
+                        color = self.GRAY
                     elif cell == 1:
                         color = self.BLACK
                     elif cell > 10:

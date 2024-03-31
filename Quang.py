@@ -276,18 +276,19 @@ class Map:
         maxCol = self.col
         if not checkUnValidCell(seekerRow - 1, seekerCol - 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            increaseWeight = 1
+            if self.board[seekerRow - 1][seekerCol - 1] == -1 + 20: 
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
                 for j in range (seekerCol - 3, seekerCol + 4):
                     if j < 0 or j >= self.col:
                         continue
-                    if tmpBoard[i][j] > 10:
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
                         tmpBoard[i][j] = -1
-
-            increaseWeight = 1
-            if self.board[seekerRow - 1][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 2
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20
             tmpBoard[seekerRow - 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
@@ -296,17 +297,20 @@ class Map:
 
         if not checkUnValidCell(seekerRow - 1, seekerCol, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            
+            increaseWeight = 1
+            if self.board[seekerRow - 1][seekerCol] == -1 + 20: 
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
                 for j in range (seekerCol - 3, seekerCol + 4):
                     if j < 0 or j >= self.col:
                         continue
-                    if tmpBoard[i][j] > 10:
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
                         tmpBoard[i][j] = -1
-            increaseWeight = 1
-            if self.board[seekerRow - 1][seekerCol] == -1 + 20: 
-                increaseWeight = 2
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20 
             tmpBoard[seekerRow - 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
@@ -314,17 +318,20 @@ class Map:
         
         if not checkUnValidCell(seekerRow - 1, seekerCol + 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            
+            increaseWeight = 1
+            if self.board[seekerRow - 1][seekerCol + 1] == -1 + 20: 
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
                 for j in range (seekerCol - 3, seekerCol + 4):
                     if j < 0 or j >= self.col:
                         continue
-                    if tmpBoard[i][j] > 10:
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
                         tmpBoard[i][j] = -1
-            increaseWeight = 1
-            if self.board[seekerRow - 1][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 2
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20
             tmpBoard[seekerRow - 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
@@ -332,17 +339,20 @@ class Map:
         
         if not checkUnValidCell(seekerRow, seekerCol + 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            
+            increaseWeight = 1
+            if self.board[seekerRow][seekerCol + 1] == -1 + 20: 
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
                 for j in range (seekerCol - 3, seekerCol + 4):
                     if j < 0 or j >= self.col:
                         continue
-                    if tmpBoard[i][j] > 10:
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
                         tmpBoard[i][j] = -1
-            increaseWeight = 1
-            if self.board[seekerRow][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 2
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20
             tmpBoard[seekerRow][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
@@ -350,53 +360,62 @@ class Map:
         
         if not checkUnValidCell(seekerRow + 1, seekerCol + 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
-            for i in range (seekerRow - 3, seekerRow + 4):
-                if i < 0 or i >= self.row:
-                    continue
-                for j in range (seekerCol - 3, seekerCol + 4):
-                    if j < 0 or j >= self.col:
-                        continue
-                    if tmpBoard[i][j] > 10:
-                        tmpBoard[i][j] = -1
+            
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol + 1] == -1 + 20: 
                 increaseWeight = 2
             tmpBoard[seekerRow + 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
+            for i in range (seekerRow - 3, seekerRow + 4):
+                if i < 0 or i >= self.row:
+                    continue
+                for j in range (seekerCol - 3, seekerCol + 4):
+                    if j < 0 or j >= self.col:
+                        continue
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
+                        tmpBoard[i][j] = -1
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         
         if not checkUnValidCell(seekerRow + 1, seekerCol, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
-            for i in range (seekerRow - 3, seekerRow + 4):
-                if i < 0 or i >= self.row:
-                    continue
-                for j in range (seekerCol - 3, seekerCol + 4):
-                    if j < 0 or j >= self.col:
-                        continue
-                    if tmpBoard[i][j] > 10:
-                        tmpBoard[i][j] = -1
+            
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol] == -1 + 20: 
                 increaseWeight = 2
             tmpBoard[seekerRow + 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
-            newMap.append(tmpMap)
-        
-        if not checkUnValidCell(seekerRow + 1, seekerCol - 1, self.board, maxRow, maxCol):
-            tmpBoard = [row[:] for row in self.board]
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
                 for j in range (seekerCol - 3, seekerCol + 4):
                     if j < 0 or j >= self.col:
                         continue
-                    if tmpBoard[i][j] > 10:
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
                         tmpBoard[i][j] = -1
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
+            newMap.append(tmpMap)
+        
+        if not checkUnValidCell(seekerRow + 1, seekerCol - 1, self.board, maxRow, maxCol):
+            tmpBoard = [row[:] for row in self.board]
+            
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol - 1] == -1 + 20: 
                 increaseWeight = 2
+            for i in range (seekerRow - 3, seekerRow + 4):
+                if i < 0 or i >= self.row:
+                    continue
+                for j in range (seekerCol - 3, seekerCol + 4):
+                    if j < 0 or j >= self.col:
+                        continue
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
+                        tmpBoard[i][j] = -1
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20
             tmpBoard[seekerRow + 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
@@ -404,23 +423,25 @@ class Map:
         
         if not checkUnValidCell(seekerRow, seekerCol - 1, self.board, maxRow, maxCol):
             tmpBoard = [row[:] for row in self.board]
+            
+            increaseWeight = 1
+            if self.board[seekerRow][seekerCol - 1] == -1 + 20: 
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
                 for j in range (seekerCol - 3, seekerCol + 4):
                     if j < 0 or j >= self.col:
                         continue
-                    if tmpBoard[i][j] > 10:
+                    if tmpBoard[i][j] == 19 or tmpBoard[i][j] == 20:
                         tmpBoard[i][j] = -1
-            increaseWeight = 1
-            if self.board[seekerRow][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 2
+                    elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
+                        tmpBoard[i][j] -= 20
             tmpBoard[seekerRow][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
-        return newMap
-        
+        return newMap    
 
     def moveSeekerII(self): 
         newMap = []
@@ -618,7 +639,6 @@ class Map:
     #not done yet
     def A_Star(self, goalRow, goalCol, type, path):
         tmp = []
-        self.getVision()
 
         if self.checkAnnoucementorHider(tmp):
             type = 1
