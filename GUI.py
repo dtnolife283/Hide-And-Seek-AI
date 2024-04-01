@@ -23,6 +23,7 @@ class GUI:
         self.screen.blit(self.background, (0, 0))
         pygame.display.flip()
 
+        self.LIGHT_PURPLE = (255, 153, 255)
         self.YELLOW = (255, 255, 0)
         self.BLUE = (0, 0, 255)
         self.RED = (255, 0, 0)
@@ -44,6 +45,15 @@ class GUI:
             for _ in range(HEIGHT):
                 row = list(map(int, file.readline().split()))
                 matrix.append(row)
+
+            remaining_lines = []
+            for line in file:
+                remaining_lines.append(list(map(int, line.strip().split())))
+        
+        for row in range(len(remaining_lines)):
+            for i in range(remaining_lines[row][0], remaining_lines[row][2] + 1):
+                for j in range(remaining_lines[row][1], remaining_lines[row][3] + 1):
+                    matrix[i][j] = 1
         return matrix, HEIGHT, WIDTH
 
     def draw_button(self, x, y, text, WIDTH, HEIGHT, hover=False):
@@ -95,6 +105,8 @@ class GUI:
                         color = self.GRAY
                     elif cell == 1:
                         color = self.BLACK
+                    elif cell == 5:
+                        color = self.LIGHT_PURPLE
                     elif cell == 19 or cell == 20:
                         color = self.YELLOW
                     pygame.draw.rect(self.screen, color, (x, y, cell_size, cell_size))
@@ -212,8 +224,8 @@ class GUI:
                             running = False
                 pygame.display.flip()
             
-            step = 0
-            while (step < 3):
+            running = True
+            while running:
                 goalPos = map_matrix.findMostValueCell()
                 path = []
                 tmp = map_matrix.A_Star(goalPos[0], goalPos[1], path)
@@ -231,8 +243,7 @@ class GUI:
                             time.sleep(0.2)
                         map_matrix = path[-1]
                         map_matrix.parent = None
-                        step -= 1
-                step += 1
+                        
                 remaining_hiders = 0
                 for i in range(map_matrix.row):
                     for j in range(map_matrix.col):
@@ -241,7 +252,6 @@ class GUI:
                 if remaining_hiders == 0:
                     running = False
                     break
-                print(step)
                 pygame.display.flip()
 
             running = True
