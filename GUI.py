@@ -163,7 +163,7 @@ class GUI:
             self.background = pygame.image.load(background_path)
             self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
             self.screen.blit(self.background, (0, 0))
-
+            partition = self.WIDTH // 16
             # Calculate button dimensions and positions
             if self.level == 1:
                 font = pygame.font.Font(None, 50)
@@ -183,15 +183,7 @@ class GUI:
                 text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
                 self.screen.blit(text_surface, text_rect)
 
-            elif self.level == 4:
-                font = pygame.font.Font(None, 50)
-                text_surface = font.render("Level 4", True, self.BLACK)
-                text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
-                self.screen.blit(text_surface, text_rect)
-            
             map_matrix.getVision()
-
-            partition = self.WIDTH // 16
             start_x_matrix = partition * 0.5
             start_y_matrix = partition * 1.5
             end_x_matrix = partition * 11.5
@@ -264,21 +256,23 @@ class GUI:
                 pygame.display.flip()
 
     def level_screen(self):
+        directory = "MAP"
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, directory)
+        if self.level == 1:
+            file_path = os.path.join(file_path, "Level1")
+        elif self.level == 2:
+            file_path = os.path.join(file_path, "Level2")
+        elif self.level == 3:
+            file_path = os.path.join(file_path, "Level3")
+        files = [file for file in os.listdir(file_path) if file.endswith('.txt')]
+        
         current_dir = os.path.dirname(os.path.abspath(__file__))
         directory = "IMAGES"
         background_path = os.path.join(current_dir, directory)
         background_path = os.path.join(background_path, "background.jpg")
         self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
         self.screen.blit(self.background, (0, 0))
-
-        directory = "MAP"
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(current_dir, directory)
-        if self.level == 1:
-            file_path = os.path.join(file_path, "1 HIDER")
-        else:
-            file_path = os.path.join(file_path, "2+ HIDERS")
-        files = [file for file in os.listdir(file_path) if file.endswith('.txt')]
         
         # Calculate button dimensions and positions
         button_width = 200
@@ -308,10 +302,23 @@ class GUI:
             self.screen.blit(text_surface, text_rect)
 
         elif self.level == 4:
-            font = pygame.font.Font(None, 50)
-            text_surface = font.render("Level 4", True, self.BLACK)
-            text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
-            self.screen.blit(text_surface, text_rect)
+                font = pygame.font.Font(None, 50)
+                text_surface = font.render("Level 4", True, self.BLACK)
+                text_rect = text_surface.get_rect(center=(self.WIDTH // 2, 50))
+                self.screen.blit(text_surface, text_rect)
+                picture_path = os.path.join(current_dir, directory)
+                picture_path = os.path.join(picture_path, "give up.jpg")
+                picture = pygame.image.load(picture_path)
+                partition = self.WIDTH // 16  
+                picture = pygame.transform.scale(picture, (partition * 6 * 1.5, partition * 6))
+                self.screen.blit(picture, (partition * 3.5, partition * 1.5))
+
+                while True:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+                    pygame.display.flip()
 
         running = True
         while running:
