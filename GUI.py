@@ -95,7 +95,7 @@ class GUI:
                         color = self.GRAY
                     elif cell == 1:
                         color = self.BLACK
-                    elif cell > 10:
+                    elif cell == 19 or cell == 20:
                         color = self.YELLOW
                     pygame.draw.rect(self.screen, color, (x, y, cell_size, cell_size))
         pygame.display.flip()
@@ -178,15 +178,13 @@ class GUI:
                 self.screen.blit(text_surface, text_rect)
             
             map_matrix.getVision()
-            matrix = map_matrix.board
-
 
             partition = self.WIDTH // 16
             start_x_matrix = partition * 0.5
             start_y_matrix = partition * 1.5
             end_x_matrix = partition * 11.5
             end_y_matrix = partition * 8.5
-            self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+            self.draw_matrix(map_matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
 
             start_x_note = partition * 12
             start_y_note = partition * 1.5
@@ -214,82 +212,150 @@ class GUI:
                             running = False
                 pygame.display.flip()
             
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print()
+
+            # map_matrix, found = map_matrix.moveSeekerII()
+            # for row in map_matrix.board:
+            #     for cell in row:
+            #         print(cell, end = "\t")
+            #     print()
+            # print() 
+
             running = True
+            i = 0
             while running:
-                # tmp = map_matrix.moveSeekerII()
-                # if tmp == None:
-                #     pos = []
-                #     for i in range(map_matrix.row):
-                #         for j in range(map_matrix.col):
-                #             if map_matrix.board[i][j] == 0:
-                #                 pos.append((i, j))
-                #     pos = random.choice(pos)
-                #     running = False
-
-                #     while running:
-                #         map_matrix = map_matrix.moveToDes(pos[0], pos[1])
-                #         map_matrix.getVision()
-                #         matrix = map_matrix.board
-                #         self.draw_matrix(matrix, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-
-                #         for event in pygame.event.get():
-                #             if event.type == pygame.QUIT:
-                #                 pygame.quit()
-                #                 sys.exit()
-                #         pygame.display.flip()
-
-                # map_matrix = map_matrix.moveSeekerII()
-                # map_matrix.getVision()
-                # matrix = map_matrix.board
-
-                #test A*
-                path = []
-                type = 0
-                
-                #test goal
-                goalPos = map_matrix.findMostValueCell()
-                print(goalPos)
-
-                #tmp = map_matrix.A_Star(0, 0, type, path)
-                #tmp = map_matrix.A_Star(9, 24, type, path)
-                tmp = map_matrix.A_Star(0, 0, path)
-                for matrix in path:
+                tmpMatrix, found = map_matrix.moveSeekerII()
+                i += 1
+                print(i)
+                if found == True:
+                    for matrix in tmpMatrix:
                         time.sleep(0.2)
                         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                map_matrix = path[len(path)-1]
-                print(map_matrix.seekerPosition)
-                if tmp != None:
-                    path.clear()
-                    if map_matrix.A_Star2(tmp[0], tmp[1], path):
+                        map_matrix = matrix
+                    continue
+                
+                if tmpMatrix == None:
+                    goalPos = map_matrix.findMostValueCell()
+                    path = []
+                    tmp = map_matrix.A_Star(goalPos[0], goalPos[1], path)
+                    if tmp == None:
                         for matrix in path:
                             time.sleep(0.2)
                             self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                else:
-                    goalPos = map_matrix.findMostValueCell()
-                    print(goalPos)
-                    path.clear()
-                    tmp = map_matrix.A_Star(goalPos[0], goalPos[1], path)
-                    for matrix in path:
-                        time.sleep(0.2)
-                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        map_matrix = path[len(path) - 1]
+                    else:
+                        path.clear()
+                        path = []
+                        tmp = map_matrix.A_Star2(tmp[0], tmp[1], path)
+                        for matrix in path:
+                            time.sleep(0.2)
+                            self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        map_matrix = path[len(path) - 1]
+                    continue
 
+                map_matrix = tmpMatrix
+                time.sleep(0.2)
+                self.draw_matrix(map_matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
 
-                running = False
-                # remaining_hiders = 0
-                # for hider in map_matrix.hiderPosition:
-                #     if hider[0] != -10 and hider[1] != -10:
-                #         remaining_hiders += 1
+                remaining_hiders = 0
+                for hider in map_matrix.hiderPosition:
+                    if hider[0] != -10 and hider[1] != -10:
+                        remaining_hiders += 1
 
-                # if remaining_hiders == 0:
-                #     running = False
+                if remaining_hiders == 0:
+                    running = False
 
-                # for event in pygame.event.get():
-                #     if event.type == pygame.QUIT:
-                #         pygame.quit()
-                #         sys.exit()
-                # pygame.display.flip()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                pygame.display.flip()
 
-            running = False
+            running = True
             # running = True
             while running:
                 for event in pygame.event.get():
