@@ -212,147 +212,36 @@ class GUI:
                             running = False
                 pygame.display.flip()
             
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print()
-
-            # map_matrix, found = map_matrix.moveSeekerII()
-            # for row in map_matrix.board:
-            #     for cell in row:
-            #         print(cell, end = "\t")
-            #     print()
-            # print() 
-
-            running = True
-            i = 0
-            while running:
-                tmpMatrix, found = map_matrix.moveSeekerII()
-                i += 1
-                print(i)
-                if found == True:
-                    for matrix in tmpMatrix:
-                        time.sleep(0.2)
+            step = 0
+            while (step < 3):
+                goalPos = map_matrix.findMostValueCell()
+                path = []
+                tmp = map_matrix.A_Star(goalPos[0], goalPos[1], path)
+                if tmp == None:
+                    for matrix in path:
                         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        map_matrix = matrix
-                    continue
-                
-                if tmpMatrix == None:
-                    goalPos = map_matrix.findMostValueCell()
-                    path = []
-                    tmp = map_matrix.A_Star(goalPos[0], goalPos[1], path)
-                    if tmp == None:
+                        time.sleep(0.2)
+                    map_matrix = path[-1]
+                    map_matrix.parent = None
+                else:
+                    path.clear()
+                    if map_matrix.A_Star2(tmp[0], tmp[1], path):
                         for matrix in path:
-                            time.sleep(0.2)
                             self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        map_matrix = path[len(path) - 1]
-                    else:
-                        path.clear()
-                        path = []
-                        tmp = map_matrix.A_Star2(tmp[0], tmp[1], path)
-                        for matrix in path:
                             time.sleep(0.2)
-                            self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        map_matrix = path[len(path) - 1]
-                    continue
-
-                map_matrix = tmpMatrix
-                time.sleep(0.2)
-                self.draw_matrix(map_matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-
+                        map_matrix = path[-1]
+                        map_matrix.parent = None
+                        step -= 1
+                step += 1
                 remaining_hiders = 0
-                for hider in map_matrix.hiderPosition:
-                    if hider[0] != -10 and hider[1] != -10:
-                        remaining_hiders += 1
-
+                for i in range(map_matrix.row):
+                    for j in range(map_matrix.col):
+                        if map_matrix.board[i][j] % 20 == 2:
+                            remaining_hiders += 1
                 if remaining_hiders == 0:
                     running = False
-
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
+                    break
+                print(step)
                 pygame.display.flip()
 
             running = True

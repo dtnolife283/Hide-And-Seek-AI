@@ -594,11 +594,25 @@ class Map:
                 max = newMap[i].visited
                 pos = i
         
-        if max > self.visited:
+        if max == self.visited:
             return None, False
         else:
             return newMap[pos], False
-        
+    
+    def find_cell_nearby_seeker_not_visited(self):
+        seekerRow = self.seekerPosition[0]
+        seekerCol = self.seekerPosition[1]
+        for i in range(seekerRow - 3, seekerRow + 4):
+            if i < 0 or i >= self.row:
+                continue
+            for j in range(seekerCol - 3, seekerCol + 4):
+                if j < 0 or j >= self.col:
+                    continue
+                if self.board[i][j] != 3 and self.board[i][j] != 1 and self.board[i][j] != -1 and self.board[i][j] != 22 and self.board[i][j] != 24:
+                    return i, j
+        return -1, -1
+
+
     # tmp == None => path to goal, else is position of Annouce or Hider
     def A_Star(self, goalRow, goalCol, path):
         tmp = []
