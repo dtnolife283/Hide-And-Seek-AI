@@ -40,7 +40,7 @@ def findNumberOfWallAround(row, col, board, maxRow, maxCol):
 def calcCellValue(cur_row, cur_col, goal_row, goal_col, board, ROW, COL):
     if not(board[goal_row][goal_col] == 0 or board[goal_row][goal_col] == 2):
         return 0
-    return findDiagonalDistance(cur_row, cur_col, goal_row, goal_col) + findNumberOfWallAround(goal_row, goal_col, board, ROW, COL) * (ROW + COL) // 18
+    return findDiagonalDistance(cur_row, cur_col, goal_row, goal_col) + findNumberOfWallAround(goal_row, goal_col, board, ROW, COL) * (ROW + COL) // 16
 
 
 class PriorityQueueElement:

@@ -219,6 +219,7 @@ class GUI:
             running = True
             while running:
                 goalPos = map_matrix.findMostValueCell()
+                print(goalPos)
                 path = []
                 tmp = map_matrix.A_Star(goalPos[0], goalPos[1], path)
                 if tmp == None:
