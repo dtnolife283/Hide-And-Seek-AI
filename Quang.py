@@ -38,9 +38,7 @@ def findNumberOfWallAround(row, col, board, maxRow, maxCol):
     return cnt
 
 def calcCellValue(cur_row, cur_col, goal_row, goal_col, board, ROW, COL):
-    if not(board[goal_row][goal_col] == 0 or board[goal_row][goal_col] == 2 or board[goal_row][goal_col] == 4):
-        return - 1e9
-    return findNumberOfWallAround(goal_row, goal_col, board, ROW, COL) * (ROW + COL) // 20 - findDiagonalDistance(cur_row,cur_col, goal_row, goal_col)
+    return findNumberOfWallAround(goal_row, goal_col, board, ROW, COL) * (ROW + COL) // 16 - findDiagonalDistance(cur_row,cur_col, goal_row, goal_col)
 
 
 class PriorityQueueElement:
@@ -272,11 +270,13 @@ class Map:
 
     #Find most value cell to go to: return a list of 2 element: Row and Column
     def findMostValueCell(self):
-        max = calcCellValue(self.seekerPosition[0], self.seekerPosition[1], 0, 0, self.board, self.row, self.col)
-        pos = [0,0]
+        max = -1e9
+        pos = [0, 0]
         for i in range (self.row):
             for j in range (self.col):
-                if i == 0 and j == 0:
+                if (i == 0 and j == 0) or (i == self.row and j == self.col):
+                    continue
+                if self.board[i][j] == -1 or self.board[i][j] == 1 or self.board[i][j] == 3 or self.board[i][j] > 10:
                     continue
                 tmp = calcCellValue(self.seekerPosition[0], self.seekerPosition[1], i, j, self.board, self.row, self.col)
                 if tmp > max:
@@ -676,6 +676,7 @@ class Map:
                     while state.parent != None:
                         path.append(state)
                         state = state.parent
+                    # path.append(self)
                     path.reverse()
                     return path
                 

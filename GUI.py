@@ -218,22 +218,35 @@ class GUI:
             
             running = True
             hiderPos = []
+            path = []
             while running:
                 goalPos = map_matrix.findMostValueCell()
-                print(map_matrix.board[goalPos[0]][goalPos[1]])
-                print(goalPos)
                 path = map_matrix.A_Star(goalPos[0], goalPos[1])
                 # if path != None:
                 # chắc chắn có path nên khỏi check path == None
                 for matrix in path:
                     if matrix.checkHider(hiderPos):
-                        pass
+                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        time.sleep(0.2)
+                        map_matrix = matrix
+                        map_matrix.parent = None
+                        break
                     self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                     time.sleep(0.2)
+                    
+                
+                if hiderPos != []:
+                    path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
+                    for matrix in path:
+                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        time.sleep(0.2) 
+                    hiderPos.clear()
+                    
+                
                 map_matrix = path[-1]
                 map_matrix.parent = None
-                
 
+                
                 # if hiderPos != []:
                 #     path.clear()
                 #     path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
@@ -245,7 +258,7 @@ class GUI:
                 #     map_matrix.parent = None
                 #     hiderPos.clear()
 
-                
+
                         
                 remaining_hiders = 0
                 for i in range(map_matrix.row):
