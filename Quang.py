@@ -672,7 +672,7 @@ class Map:
             
             for state in newMoves:
                 state.getVision()
-                if state.board[goalRow][goalCol] == -1:
+                if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
                     while state.parent != None:
                         path.append(state)
                         state = state.parent
@@ -690,8 +690,6 @@ class Map:
                 
         return None
 
-    # return true => find a path, false otherwise
-    
 
 
 def calc_value_smaller_20(board, row, col):
