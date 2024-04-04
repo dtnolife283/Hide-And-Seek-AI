@@ -653,7 +653,7 @@ class Map:
             return newMaxMap[pos]
     
     #Return cái Path, nếu mà k có Path thì return none.
-    def A_Star1(self, goalRow, goalCol):
+    def A_Star(self, goalRow, goalCol):
         path = []
 
         if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
@@ -692,43 +692,6 @@ class Map:
 
     # return true => find a path, false otherwise
     
-    def A_Star2(self, goalRow, goalCol):
-        path = []
-
-        if self.seekerPosition[0] == goalRow and self.seekerPosition[1] == goalCol:
-            return path
-        
-        visited = set()
-        visited.add(tuple(self.seekerPosition))
-        queue = []
-        heapq.heapify(queue)
-        priorityValue = self.weight + findDiagonalDistance(self.seekerPosition[0], self.seekerPosition[1], goalRow, goalCol)
-        newElement = PriorityQueueElement(priorityValue, self)
-        heapq.heappush(queue, newElement)
-        while (len(queue) != 0):
-            cur = heapq.heappop(queue).value
-            newMoves = cur.moveSeeker()
-            
-            for state in newMoves:
-                state.getVision()
-                if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
-                    while state.parent != None:
-                        path.append(state)
-                        state = state.parent
-                    path.reverse()
-                    return path
-                
-                if tuple(state.seekerPosition) in visited:
-                    continue
-                
-                state.parent = cur
-                priorityValue = state.weight + findDiagonalDistance(state.seekerPosition[0], state.seekerPosition[1], goalRow, goalCol)
-                newElement = PriorityQueueElement(priorityValue, state)
-                heapq.heappush(queue, newElement)
-                visited.add(tuple(state.seekerPosition))
-                
-        return None
-
 
 
 def calc_value_smaller_20(board, row, col):

@@ -222,7 +222,7 @@ class GUI:
                 goalPos = map_matrix.findMostValueCell()
                 print(map_matrix.board[goalPos[0]][goalPos[1]])
                 print(goalPos)
-                path = map_matrix.A_Star2(goalPos[0], goalPos[1])
+                path = map_matrix.A_Star(goalPos[0], goalPos[1])
                 # if path != None:
                 # chắc chắn có path nên khỏi check path == None
                 for matrix in path:
@@ -238,7 +238,7 @@ class GUI:
 
                 if hiderPos != []:
                     path.clear()
-                    path = map_matrix.A_Star2(hiderPos[0], hiderPos[1])
+                    path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
                     print(path)
                     for matrix in path:
                         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
