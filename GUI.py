@@ -227,34 +227,25 @@ class GUI:
                 # chắc chắn có path nên khỏi check path == None
                 for matrix in path:
                     if matrix.checkHider(hiderPos):
-                        map_matrix = matrix
-                        map_matrix.parent = None
-                        break
+                        pass
                     self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                     time.sleep(0.2)
                 map_matrix = path[-1]
                 map_matrix.parent = None
                 
 
-                if hiderPos != []:
-                    path.clear()
-                    path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
-                    print(path)
-                    for matrix in path:
-                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        time.sleep(0.2)
-                    map_matrix = path[-1]
-                    map_matrix.parent = None
-                    hiderPos.clear()
-                # Chắc chắn có path nên chắc là khỏi có cái else sau
-                # else:
+                # if hiderPos != []:
                 #     path.clear()
-                #     if map_matrix.A_Star2(tmp[0], tmp[1], path):
-                #         for matrix in path:
-                #             self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                #             time.sleep(0.2)
-                #         map_matrix = path[-1]
-                #         map_matrix.parent = None
+                #     path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
+                #     print(path)
+                #     for matrix in path:
+                #         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                #         time.sleep(0.2)
+                #     map_matrix = path[-1]
+                #     map_matrix.parent = None
+                #     hiderPos.clear()
+
+                
                         
                 remaining_hiders = 0
                 for i in range(map_matrix.row):
