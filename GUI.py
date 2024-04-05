@@ -365,7 +365,94 @@ class GUI:
                     text_surface = font.render("GIVE UP", True, self.RED)
                     text_rect = text_surface.get_rect(left=self.WIDTH // 2 * 1.5 + 60, top=50)
                     self.screen.blit(text_surface, text_rect)
-                
+            
+
+            else: 
+                hiderPos = []
+                startMatrix = Map2(map_matrix.board, map_matrix.row, map_matrix.col, 0, None)
+                for i in range(map_matrix.row):
+                    for j in range (map_matrix.col):
+                        if map_matrix.board[i][j] == 2:
+                            hiderPos.append(i)
+                            hiderPos.append(j)
+                running = True
+                path = []
+                step = 0
+                tmp = 0
+                while (running):
+                    goalPos = startMatrix.findMostValueCell()
+                    
+                    path = startMatrix.A_Star(goalPos[0], goalPos[1])
+                    for matrix in path:
+                        tmp = matrix.board[hiderPos[0]][hiderPos[1]]
+                        matrix.board[hiderPos[0]][hiderPos[1]] = 2
+                        self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        time.sleep(0.2)
+
+                        if tmp > 10:
+                            self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                            time.sleep(0.2)
+                            startMatrix = matrix
+                            startMatrix.parent = None
+                            break
+
+
+                        matrix.board[hiderPos[0]][hiderPos[1]] = tmp
+                        moveHider(matrix, hiderPos)
+                        tmp = matrix.board[hiderPos[0]][hiderPos[1]]
+                        matrix.board[hiderPos[0]][hiderPos[1]] = 2
+                        if tmp > 10:
+                            self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                            time.sleep(0.2)
+                            startMatrix = matrix
+                            startMatrix.parent = None
+                            break
+                        self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        time.sleep(0.2)
+
+
+                    if tmp <= 10:
+                        startMatrix = path[-1]
+                        for i in range( startMatrix.row):
+                            for j in range ( startMatrix.col):
+                                if  startMatrix.board[i][j] == 2:
+                                    startMatrix.board[i][j] = tmp
+                        startMatrix.parent = None
+                        running = True
+                    else:
+                        while (startMatrix.seekerPosition[0] != hiderPos[0] or startMatrix.seekerPosition[1] != hiderPos[1]):
+                            for i in range(startMatrix.row):
+                                for j in range(startMatrix.col):
+                                    if startMatrix.board[i][j] >= 19:
+                                        startMatrix.board[i][j] -= 20
+                            startMatrix = startMatrix.moveSeeker2(hiderPos)
+                            # for i in range(startMatrix.row):
+                            #     for j in range(startMatrix.col):
+                            #         if startMatrix.board[i][j] >= 19:
+                            #             startMatrix.board[i][j] -= 20
+                            startMatrix.getVision()
+                            tmp = startMatrix.board[hiderPos[0]][hiderPos[1]]
+                            startMatrix.board[hiderPos[0]][hiderPos[1]] = 2
+                            if startMatrix.seekerPosition[0] == hiderPos[0] and startMatrix.seekerPosition[1] == hiderPos[1]:
+                                startMatrix.board[hiderPos[0]][hiderPos[1]] = 3
+                                self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                                time.sleep(10)
+                                return
+                            self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                            time.sleep(0.2)
+                            startMatrix.board[hiderPos[0]][hiderPos[1]] = tmp
+                            moveHider(startMatrix, hiderPos)
+                            tmp = startMatrix.board[hiderPos[0]][hiderPos[1]]
+                            
+                            startMatrix.board[hiderPos[0]][hiderPos[1]] = 2
+                            self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                            time.sleep(0.2)
+
+                            for i in range(startMatrix.row):
+                                for j in range(startMatrix.col):
+                                    if startMatrix.board[i][j] >= 19:
+                                        startMatrix.board[i][j] -= 20
+
                 running = True
                 # running = True
                 while running:
