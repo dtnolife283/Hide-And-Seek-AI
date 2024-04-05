@@ -216,79 +216,81 @@ class GUI:
                             running = False
                 pygame.display.flip()
             
-            running = True
-            hiderPos = []
-            path = []
-            tmpPos = []
-            tmpVal = []
-            step = 0
-            while running:
-                goalPos = map_matrix.findMostValueCell()
-                path = map_matrix.A_Star(goalPos[0], goalPos[1])
-                # if path != None:
-                # chắc chắn có path nên khỏi check path == None
-                for matrix in path:
-                    tmpMatrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
-                    if matrix.checkHider(hiderPos):
+
+            if self.level != 3:
+                running = True
+                hiderPos = []
+                path = []
+                tmpPos = []
+                tmpVal = []
+                step = 0
+                while running:
+                    goalPos = map_matrix.findMostValueCell()
+                    path = map_matrix.A_Star(goalPos[0], goalPos[1])
+                    # if path != None:
+                    # chắc chắn có path nên khỏi check path == None
+                    for matrix in path:
+                        tmpMatrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
+                        if matrix.checkHider(hiderPos):
+                            self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                            time.sleep(0.2)
+                            tmpPos.clear()
+                            tmpVal.clear()
+                            map_matrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
+                            break
+                        tmpMatrix.createAnnounce(step, tmpVal, tmpPos)
                         self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        step += 1
                         time.sleep(0.2)
-                        tmpPos.clear()
-                        tmpVal.clear()
-                        map_matrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
-                        break
-                    tmpMatrix.createAnnounce(step, tmpVal, tmpPos)
-                    self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                    step += 1
-                    time.sleep(0.2)
+                        
                     
-                
-                if hiderPos != []:
+                    if hiderPos != []:
+                        for i in range(len(tmpPos)):
+                            map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
+                        path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
+                        for matrix in path:
+                            self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                            step += 1
+                            time.sleep(0.2) 
+                        hiderPos.clear()
+                        
+                    
+                    map_matrix = Map(path[-1].board, path[-1].row, path[-1].col, 0, None)
                     for i in range(len(tmpPos)):
                         map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
-                    path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
-                    for matrix in path:
-                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        step += 1
-                        time.sleep(0.2) 
-                    hiderPos.clear()
                     
-                
-                map_matrix = Map(path[-1].board, path[-1].row, path[-1].col, 0, None)
-                for i in range(len(tmpPos)):
-                    map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
-                
-                map_matrix.parent = None
+                    map_matrix.parent = None
 
-                # if hiderPos != []:
-                #     path.clear()
-                #     path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
-                #     print(path)
-                #     for matrix in path:
-                #         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                #         time.sleep(1)
-                #     map_matrix = path[-1]
-                #     map_matrix.parent = None
-                #     hiderPos.clear()
-                  
-                remaining_hiders = 0
-                for i in range(map_matrix.row):
-                    for j in range(map_matrix.col):
-                        if map_matrix.board[i][j] % 20 == 2:
-                            remaining_hiders += 1
-                if remaining_hiders == 0:
-                    running = False
-                    break
-                pygame.display.flip()
+                    # if hiderPos != []:
+                    #     path.clear()
+                    #     path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
+                    #     print(path)
+                    #     for matrix in path:
+                    #         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                    #         time.sleep(1)
+                    #     map_matrix = path[-1]
+                    #     map_matrix.parent = None
+                    #     hiderPos.clear()
+                    
+                    remaining_hiders = 0
+                    for i in range(map_matrix.row):
+                        for j in range(map_matrix.col):
+                            if map_matrix.board[i][j] % 20 == 2:
+                                remaining_hiders += 1
+                    if remaining_hiders == 0:
+                        running = False
+                        break
+                    pygame.display.flip()
 
-            running = True
-            # running = True
-            while running:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                pygame.display.flip()
-
+                running = True
+                # running = True
+                while running:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+                    pygame.display.flip()
+        
     def level_screen(self):
         directory = "MAP"
         current_dir = os.path.dirname(os.path.abspath(__file__))
