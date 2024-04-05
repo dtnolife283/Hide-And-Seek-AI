@@ -265,6 +265,8 @@ class GUI:
                             map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
                         path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
                         for matrix in path:
+                            if matrix == path[0]:
+                                continue
                             if matrix == path[-1]:
                                 score_point += 20
                             score_point -= 1
@@ -279,22 +281,12 @@ class GUI:
                         hiderPos.clear()
                         
                     
-                    map_matrix = Map(path[-1].board, path[-1].row, path[-1].col, 0, None)
+                    map_matrix = Map(path[-1].board, path[-1].row, path[-1].col, path[-1].weight, None)
                     for i in range(len(tmpPos)):
                         map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
                     
                     map_matrix.parent = None
 
-                    # if hiderPos != []:
-                    #     path.clear()
-                    #     path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
-                    #     print(path)
-                    #     for matrix in path:
-                    #         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                    #         time.sleep(1)
-                    #     map_matrix = path[-1]
-                    #     map_matrix.parent = None
-                    #     hiderPos.clear()
                     
                     remaining_hiders = 0
                     for i in range(map_matrix.row):
