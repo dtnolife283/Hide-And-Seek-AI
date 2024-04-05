@@ -150,7 +150,7 @@ class GUI:
 
         pygame.draw.rect(self.screen, self.BLACK, (start_x + 10, start_y + 10 + total_width // 2 + 2 * line_spacing, 40, 40))
         pygame.draw.rect(self.screen, self.YELLOW, (start_x + 10, start_y + 10 + total_width // 2 + 3 * line_spacing, 40, 40))
-        pygame.draw.rect(self.screen, self.RED, (start_x + 10, start_y + 10 + total_width // 2 + 4 * line_spacing, 40, 40))
+        pygame.draw.rect(self.screen, self.LIGHT_PURPLE, (start_x + 10, start_y + 10 + total_width // 2 + 4 * line_spacing, 40, 40))
 
 
         pygame.display.flip()
@@ -225,9 +225,19 @@ class GUI:
                 tmpPos = []
                 tmpVal = []
                 step = 0
+                give_up = False
                 while running:
                     goalPos = map_matrix.findMostValueCell()
                     path = map_matrix.A_Star(goalPos[0], goalPos[1])
+                    # remaining_hiders = 0
+                    # for i in range(map_matrix.row):
+                    #     for j in range(map_matrix.col):
+                    #         if map_matrix.board[i][j] % 20 == 2:
+                    #             remaining_hiders += 1
+                    # if (17 + remaining_hiders) * remaining_hiders < len(path):
+                    #     give_up = True
+                    #     break
+
                     # if path != None:
                     # chắc chắn có path nên khỏi check path == None
                     for matrix in path:
@@ -285,7 +295,59 @@ class GUI:
                     for i in range(len(tmpPos)):
                         map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
                     
-                    map_matrix.parent = None
+                    tmpPos.clear()
+                    tmpVal.clear()
+                    step = 0
+                    while True:
+                        res, found = map_matrix.localSearch()
+                        if found:
+                            print("found")
+                            for i in range(len(tmpPos)):
+                                map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
+                            for matrix in res:
+                                if matrix == res[0]:
+                                    continue
+                                if matrix == res[-1]:
+                                    score_point += 20
+                                score_point -= 1
+
+                                pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                                text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                                text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                                self.screen.blit(text_surface, text_rect)
+                                
+                                self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                                step += 1
+                                time.sleep(0.2)
+                            map_matrix = Map(res[-1].board, res[-1].row, res[-1].col, res[-1].weight, None)
+                        else:
+                            if res == None:
+                                map_matrix.getVision() 
+                                break
+                            else:
+                                resBoard = res.board.copy()
+                                map_matrix = Map(resBoard, res.row, res.col, res.weight, None)
+
+                                score_point -= 1
+                                pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                                text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                                text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                                self.screen.blit(text_surface, text_rect)
+                                tmpMap = Map(res.board.copy(), res.row, res.col, res.weight, None)
+                                tmpMap.createAnnounce(step, tmpVal, tmpPos)
+                                self.draw_matrix(tmpMap.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                                step += 1
+                                time.sleep(0.2)
+                        remaining_hiders = 0
+                        for i in range(map_matrix.row):
+                            for j in range(map_matrix.col):
+                                if map_matrix.board[i][j] % 20 == 2:
+                                    remaining_hiders += 1
+                        if remaining_hiders == 0:
+                            running = False
+                            break
+                    for i in range(len(tmpPos)):
+                            map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
 
                     score_point += 1
                     remaining_hiders = 0
@@ -297,7 +359,13 @@ class GUI:
                         running = False
                         break
                     pygame.display.flip()
-
+                
+                if give_up:
+                    font = pygame.font.Font(None, 50)
+                    text_surface = font.render("GIVE UP", True, self.RED)
+                    text_rect = text_surface.get_rect(left=self.WIDTH // 2 * 1.5 + 60, top=50)
+                    self.screen.blit(text_surface, text_rect)
+                
                 running = True
                 # running = True
                 while running:
