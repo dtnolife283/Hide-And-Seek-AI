@@ -125,7 +125,7 @@ class GUI:
         self.screen.blit(text_surface, text_rect)
 
 
-        text_lines = [": Seeker", ": Hider", ": Obstacle", ": Seeker's Vision", ": Hider's Vision"]
+        text_lines = [": Seeker", ": Hider", ": Obstacle", ": Seeker's Vision", ": Announcement"]
         line_spacing = 60 
 
         # Draw each line of text
@@ -196,6 +196,7 @@ class GUI:
             end_y_note = partition * 8.5
             self.draw_note(start_x_note, start_y_note, end_x_note, end_y_note)
 
+            score_point = 0
             running = True
             while running:
                 button_y = end_y_note - 70
@@ -232,12 +233,27 @@ class GUI:
                     for matrix in path:
                         tmpMatrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
                         if matrix.checkHider(hiderPos):
+                            score_point -= 1
+                            pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                            text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                            text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                            self.screen.blit(text_surface, text_rect)
+
                             self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                            
                             time.sleep(0.2)
                             tmpPos.clear()
                             tmpVal.clear()
                             map_matrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
                             break
+
+                        score_point -= 1
+
+                        pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                        text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                        text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                        self.screen.blit(text_surface, text_rect)
+
                         tmpMatrix.createAnnounce(step, tmpVal, tmpPos)
                         self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                         step += 1
@@ -249,6 +265,14 @@ class GUI:
                             map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
                         path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
                         for matrix in path:
+                            if matrix == path[-1]:
+                                score_point += 20
+                            score_point -= 1
+                            pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                            text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                            text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                            self.screen.blit(text_surface, text_rect)
+
                             self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                             step += 1
                             time.sleep(0.2) 
