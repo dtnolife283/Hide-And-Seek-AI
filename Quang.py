@@ -671,7 +671,7 @@ class Map:
             for state in newMoves:
                 state.getVision()
                 if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
-                    while state.parent != None:
+                    while state != None:
                         path.append(state)
                         state = state.parent
                     # path.append(self)

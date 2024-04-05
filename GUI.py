@@ -196,7 +196,7 @@ class GUI:
             end_y_note = partition * 8.5
             self.draw_note(start_x_note, start_y_note, end_x_note, end_y_note)
 
-            score_point = 0
+            score_point = 1
             running = True
             while running:
                 button_y = end_y_note - 70
@@ -287,7 +287,7 @@ class GUI:
                     
                     map_matrix.parent = None
 
-                    
+                    score_point += 1
                     remaining_hiders = 0
                     for i in range(map_matrix.row):
                         for j in range(map_matrix.col):
