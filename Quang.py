@@ -671,7 +671,7 @@ class Map:
             for state in newMoves:
                 state.getVision()
                 if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
-                    while state.parent != None:
+                    while state != None:
                         path.append(state)
                         state = state.parent
                     # path.append(self)
@@ -727,3 +727,19 @@ class Map:
         else:
             for i in range(len(tmpPos)):
                 self.board[tmpPos[i][0]][tmpPos[i][1]] = 24 if self.board[tmpPos[i][0]][tmpPos[i][1]] >= 10 else 4
+
+
+    def moveHider (self, Pos):
+        direction = [[0,0],[-1,-1],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1]]
+        i = random.randint(0, 8)
+        newHiderRow = direction[i][0] + Pos[0]
+        newHiderCol = direction[i][1] + Pos[1]
+        while (newHiderRow < 0 or newHiderCol < 0 or newHiderRow >= self.row or newHiderCol >= self.col or self.board[newHiderRow][newHiderCol] == 1):
+            i = random.randint(0, 7)
+            newHiderRow = direction[i][0] + Pos[0]
+            newHiderCol = direction[i][1] + Pos[1]
+        Pos[0] = newHiderRow
+        Pos[1] = newHiderCol
+
+    
+    
