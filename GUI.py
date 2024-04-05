@@ -105,7 +105,7 @@ class GUI:
                         color = self.GRAY
                     elif cell == 1:
                         color = self.BLACK
-                    elif cell == 5:
+                    elif cell == 4 or cell == 24:
                         color = self.LIGHT_PURPLE
                     elif cell == 19 or cell == 20:
                         color = self.YELLOW
@@ -219,47 +219,58 @@ class GUI:
             running = True
             hiderPos = []
             path = []
+            tmpPos = []
+            tmpVal = []
+            step = 0
             while running:
                 goalPos = map_matrix.findMostValueCell()
                 path = map_matrix.A_Star(goalPos[0], goalPos[1])
                 # if path != None:
                 # chắc chắn có path nên khỏi check path == None
                 for matrix in path:
+                    tmpMatrix = Map(matrix.board, matrix.row, matrix.col, 0, None, 0)
                     if matrix.checkHider(hiderPos):
-                        self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        time.sleep(0.2)
-                        map_matrix = matrix
-                        map_matrix.parent = None
+                        tmpPos.clear()
+                        tmpVal.clear()
+                        
+                        self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        time.sleep(1)
+                        map_matrix = Map(matrix.board, matrix.row, matrix.col, 0, None, 0)
                         break
-                    self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                    tmpMatrix.createAnnounce(step, tmpVal, tmpPos)
+                    self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                    step += 1
                     time.sleep(0.2)
                     
                 
                 if hiderPos != []:
+                    for i in range(len(tmpPos)):
+                        map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
                     path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
                     for matrix in path:
                         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        time.sleep(0.2) 
+                        step += 1
+                        time.sleep(1) 
                     hiderPos.clear()
                     
                 
-                map_matrix = path[-1]
+                map_matrix = Map(path[-1].board, path[-1].row, path[-1].col, 0, None, 0)
+                for i in range(len(tmpPos)):
+                    map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
+                
                 map_matrix.parent = None
 
-                
                 # if hiderPos != []:
                 #     path.clear()
                 #     path = map_matrix.A_Star(hiderPos[0], hiderPos[1])
                 #     print(path)
                 #     for matrix in path:
                 #         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                #         time.sleep(0.2)
+                #         time.sleep(1)
                 #     map_matrix = path[-1]
                 #     map_matrix.parent = None
                 #     hiderPos.clear()
-
-
-                        
+                  
                 remaining_hiders = 0
                 for i in range(map_matrix.row):
                     for j in range(map_matrix.col):
