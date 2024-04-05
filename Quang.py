@@ -38,7 +38,7 @@ def findNumberOfWallAround(row, col, board, maxRow, maxCol):
     return cnt
 
 def calcCellValue(cur_row, cur_col, goal_row, goal_col, board, ROW, COL):
-    return findNumberOfWallAround(goal_row, goal_col, board, ROW, COL) * (ROW + COL) // 16 - findDiagonalDistance(cur_row,cur_col, goal_row, goal_col)
+    return findNumberOfWallAround(goal_row, goal_col, board, ROW, COL) * max(ROW, COL) // 16 - findDiagonalDistance(cur_row,cur_col, goal_row, goal_col)
 
 
 class PriorityQueueElement:
@@ -52,7 +52,7 @@ class PriorityQueueElement:
 
 class Map:
     # constructor
-    def __init__(self, board, row, col, weight, parent, step):  
+    def __init__(self, board, row, col, weight, parent):  
         self.board = board.copy()
         self.row = row
         self.col = col
@@ -79,7 +79,6 @@ class Map:
                     self.hiderPosition.append(hider)
 
         self.parent = parent
-        self.step = step
 
     def __str__(self):
         result = ""
@@ -308,7 +307,7 @@ class Map:
                         tmpBoard[i][j] -= 20
             tmpBoard[seekerRow - 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
             
 
@@ -330,7 +329,7 @@ class Map:
                         tmpBoard[i][j] -= 20 
             tmpBoard[seekerRow - 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         
         if not checkUnValidCell(seekerRow - 1, seekerCol + 1, self.board, maxRow, maxCol):
@@ -351,7 +350,7 @@ class Map:
                         tmpBoard[i][j] -= 20
             tmpBoard[seekerRow - 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         
         if not checkUnValidCell(seekerRow, seekerCol + 1, self.board, maxRow, maxCol):
@@ -372,7 +371,7 @@ class Map:
                         tmpBoard[i][j] -= 20
             tmpBoard[seekerRow][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         
         if not checkUnValidCell(seekerRow + 1, seekerCol + 1, self.board, maxRow, maxCol):
@@ -393,7 +392,7 @@ class Map:
                         tmpBoard[i][j] = -1
                     elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
                         tmpBoard[i][j] -= 20
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         
         if not checkUnValidCell(seekerRow + 1, seekerCol, self.board, maxRow, maxCol):
@@ -414,7 +413,7 @@ class Map:
                         tmpBoard[i][j] = -1
                     elif tmpBoard[i][j] == 22 or tmpBoard[i][j] == 24:
                         tmpBoard[i][j] -= 20
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         
         if not checkUnValidCell(seekerRow + 1, seekerCol - 1, self.board, maxRow, maxCol):
@@ -435,7 +434,7 @@ class Map:
                         tmpBoard[i][j] -= 20
             tmpBoard[seekerRow + 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         
         if not checkUnValidCell(seekerRow, seekerCol - 1, self.board, maxRow, maxCol):
@@ -456,7 +455,7 @@ class Map:
                         tmpBoard[i][j] -= 20
             tmpBoard[seekerRow][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, self.weight + increaseWeight, self)
             newMap.append(tmpMap)
         return newMap
 
@@ -476,11 +475,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol - 1] = tmpBoard[seekerRow - 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow - 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, 0, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, 0)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -497,11 +496,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol] = tmpBoard[seekerRow - 1][seekerCol], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow - 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -517,11 +516,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow - 1][seekerCol + 1] = tmpBoard[seekerRow - 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow - 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -535,13 +534,13 @@ class Map:
                 if hider[0] == seekerRow and hider[1] == seekerCol + 1:
                     tmpBoard[hider[0]][hider[1]] = -1
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol + 1] = tmpBoard[seekerRow][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     hider[0] = -10
                     hider[1] = -10
                     return resMap
             tmpBoard[seekerRow][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -557,11 +556,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol + 1] = tmpBoard[seekerRow + 1][seekerCol + 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow + 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -577,11 +576,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol] = tmpBoard[seekerRow + 1][seekerCol], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow + 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -597,11 +596,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow + 1][seekerCol - 1] = tmpBoard[seekerRow + 1][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow + 1][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -617,11 +616,11 @@ class Map:
                     tmpBoard[seekerRow][seekerCol], tmpBoard[seekerRow][seekerCol - 1] = tmpBoard[seekerRow][seekerCol - 1], tmpBoard[seekerRow][seekerCol]
                     hider[0] = -10
                     hider[1] = -10
-                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+                    resMap = Map(tmpBoard, maxRow, maxCol, 0, None)
                     return resMap
             tmpBoard[seekerRow][seekerCol - 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
-            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None, self.step + 1)
+            tmpMap = Map(tmpBoard, maxRow, maxCol, 0, None)
             tmpMap.getVision()
             for row in range(maxRow):
                 for col in range(maxCol):
@@ -672,7 +671,7 @@ class Map:
             for state in newMoves:
                 state.getVision()
                 if state.seekerPosition[0] == goalRow and state.seekerPosition[1] == goalCol:
-                    while state != None:
+                    while state.parent != None:
                         path.append(state)
                         state = state.parent
                     # path.append(self)

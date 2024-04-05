@@ -228,14 +228,13 @@ class GUI:
                 # if path != None:
                 # chắc chắn có path nên khỏi check path == None
                 for matrix in path:
-                    tmpMatrix = Map(matrix.board, matrix.row, matrix.col, 0, None, 0)
+                    tmpMatrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
                     if matrix.checkHider(hiderPos):
+                        self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
+                        time.sleep(0.2)
                         tmpPos.clear()
                         tmpVal.clear()
-                        
-                        self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        time.sleep(1)
-                        map_matrix = Map(matrix.board, matrix.row, matrix.col, 0, None, 0)
+                        map_matrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
                         break
                     tmpMatrix.createAnnounce(step, tmpVal, tmpPos)
                     self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
@@ -250,11 +249,11 @@ class GUI:
                     for matrix in path:
                         self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                         step += 1
-                        time.sleep(1) 
+                        time.sleep(0.2) 
                     hiderPos.clear()
                     
                 
-                map_matrix = Map(path[-1].board, path[-1].row, path[-1].col, 0, None, 0)
+                map_matrix = Map(path[-1].board, path[-1].row, path[-1].col, 0, None)
                 for i in range(len(tmpPos)):
                     map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
                 
@@ -415,7 +414,7 @@ class GUI:
 
             pygame.display.flip()
         matrix, height, width = self.level_screen()
-        map_matrix = Map(matrix, height, width, 0, None, 0)
+        map_matrix = Map(matrix, height, width, 0, None)
         self.solve_screen(map_matrix)
 
 
