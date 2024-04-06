@@ -385,6 +385,13 @@ class GUI:
                     for matrix in path:
                         tmp = matrix.board[hiderPos[0]][hiderPos[1]]
                         matrix.board[hiderPos[0]][hiderPos[1]] = 2
+
+                        score_point -= 1
+                        pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                        text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                        text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                        self.screen.blit(text_surface, text_rect)
+
                         self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                         time.sleep(0.2)
 
@@ -408,7 +415,7 @@ class GUI:
                             break
                         self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                         time.sleep(0.2)
-
+                    score_point += 1
 
                     if tmp <= 10:
                         startMatrix = path[-1]
@@ -437,6 +444,13 @@ class GUI:
                                 self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                                 time.sleep(10)
                                 return
+                            
+                            score_point -= 1
+                            pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                            text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                            text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                            self.screen.blit(text_surface, text_rect)
+
                             self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                             time.sleep(0.2)
                             startMatrix.board[hiderPos[0]][hiderPos[1]] = tmp
