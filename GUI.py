@@ -125,7 +125,7 @@ class GUI:
         self.screen.blit(text_surface, text_rect)
 
 
-        text_lines = [": Seeker", ": Hider", ": Obstacle", ": Seeker's Vision", ": Announcement"]
+        text_lines = [": Seeker", ": Hider", ": Obstacle + Wall", ": Seeker's Vision", ": Announcement"]
         line_spacing = 60 
 
         # Draw each line of text
@@ -301,7 +301,6 @@ class GUI:
                     while True:
                         res, found = map_matrix.localSearch()
                         if found:
-                            print("found")
                             for i in range(len(tmpPos)):
                                 map_matrix.board[tmpPos[i][0]][tmpPos[i][1]] = tmpVal[i]
                             for matrix in res:
@@ -343,7 +342,7 @@ class GUI:
                             for j in range(map_matrix.col):
                                 if map_matrix.board[i][j] % 20 == 2:
                                     remaining_hiders += 1
-                        if remaining_hiders == 0:
+                        if remaining_hiders == 1:
                             running = False
                             break
                     for i in range(len(tmpPos)):
@@ -453,14 +452,14 @@ class GUI:
                                     if startMatrix.board[i][j] >= 19:
                                         startMatrix.board[i][j] -= 20
 
-                running = True
-                # running = True
-                while running:
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            pygame.quit()
-                            sys.exit()
-                    pygame.display.flip()
+            running = True
+            # running = True
+            while running:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                pygame.display.flip()
         
     def level_screen(self):
         directory = "MAP"
