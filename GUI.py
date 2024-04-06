@@ -1,7 +1,7 @@
 import pygame
 import sys
 import os
-from Quang import *
+from MAP import *
 import time
 
 class GUI:
