@@ -229,17 +229,7 @@ class GUI:
                 while running:
                     goalPos = map_matrix.findMostValueCell()
                     path = map_matrix.A_Star(goalPos[0], goalPos[1])
-                    # remaining_hiders = 0
-                    # for i in range(map_matrix.row):
-                    #     for j in range(map_matrix.col):
-                    #         if map_matrix.board[i][j] % 20 == 2:
-                    #             remaining_hiders += 1
-                    # if (17 + remaining_hiders) * remaining_hiders < len(path):
-                    #     give_up = True
-                    #     break
-
-                    # if path != None:
-                    # chắc chắn có path nên khỏi check path == None
+                    
                     for matrix in path:
                         tmpMatrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
                         if matrix.checkHider(hiderPos):
@@ -342,7 +332,7 @@ class GUI:
                             for j in range(map_matrix.col):
                                 if map_matrix.board[i][j] % 20 == 2:
                                     remaining_hiders += 1
-                        if remaining_hiders == 1:
+                        if remaining_hiders == 0:
                             running = False
                             break
                     for i in range(len(tmpPos)):
@@ -432,15 +422,18 @@ class GUI:
                                     if startMatrix.board[i][j] >= 19:
                                         startMatrix.board[i][j] -= 20
                             startMatrix = startMatrix.moveSeeker2(hiderPos)
-                            # for i in range(startMatrix.row):
-                            #     for j in range(startMatrix.col):
-                            #         if startMatrix.board[i][j] >= 19:
-                            #             startMatrix.board[i][j] -= 20
+                            
                             startMatrix.getVision()
                             tmp = startMatrix.board[hiderPos[0]][hiderPos[1]]
                             startMatrix.board[hiderPos[0]][hiderPos[1]] = 2
                             if startMatrix.seekerPosition[0] == hiderPos[0] and startMatrix.seekerPosition[1] == hiderPos[1]:
                                 startMatrix.board[hiderPos[0]][hiderPos[1]] = 3
+                                score_point +=20 
+                                pygame.draw.rect(self.screen, self.WHITE, (start_x_note + 135, start_y_note + 60, 100, 50))
+                                text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
+                                text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
+                                self.screen.blit(text_surface, text_rect)
+
                                 self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                                 time.sleep(10)
                                 return
