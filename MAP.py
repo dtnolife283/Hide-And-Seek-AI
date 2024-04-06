@@ -297,7 +297,7 @@ class Map:
             tmpBoard = [row[:] for row in self.board]
             increaseWeight = 1
             if self.board[seekerRow - 1][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -319,7 +319,7 @@ class Map:
             
             increaseWeight = 1
             if self.board[seekerRow - 1][seekerCol] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -340,7 +340,7 @@ class Map:
             
             increaseWeight = 1
             if self.board[seekerRow - 1][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -361,7 +361,7 @@ class Map:
             
             increaseWeight = 1
             if self.board[seekerRow][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -382,7 +382,7 @@ class Map:
             
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             tmpBoard[seekerRow + 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             for i in range (seekerRow - 3, seekerRow + 4):
@@ -403,7 +403,7 @@ class Map:
             
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             tmpBoard[seekerRow + 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             for i in range (seekerRow - 3, seekerRow + 4):
@@ -424,7 +424,7 @@ class Map:
             
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -445,7 +445,7 @@ class Map:
             
             increaseWeight = 1
             if self.board[seekerRow][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -818,7 +818,7 @@ class Map2:
             tmpBoard = [row[:] for row in self.board]
             increaseWeight = 1
             if self.board[seekerRow - 1][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -840,7 +840,7 @@ class Map2:
             
             increaseWeight = 1
             if self.board[seekerRow - 1][seekerCol] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -861,7 +861,7 @@ class Map2:
             
             increaseWeight = 1
             if self.board[seekerRow - 1][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -882,7 +882,7 @@ class Map2:
             
             increaseWeight = 1
             if self.board[seekerRow][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -903,7 +903,7 @@ class Map2:
             
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol + 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             tmpBoard[seekerRow + 1][seekerCol + 1] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             for i in range (seekerRow - 3, seekerRow + 4):
@@ -924,7 +924,7 @@ class Map2:
             
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             tmpBoard[seekerRow + 1][seekerCol] = 3
             tmpBoard[seekerRow][seekerCol] = -1
             for i in range (seekerRow - 3, seekerRow + 4):
@@ -945,7 +945,7 @@ class Map2:
             
             increaseWeight = 1
             if self.board[seekerRow + 1][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
@@ -966,7 +966,7 @@ class Map2:
             
             increaseWeight = 1
             if self.board[seekerRow][seekerCol - 1] == -1 + 20: 
-                increaseWeight = 5
+                increaseWeight = 2
             for i in range (seekerRow - 3, seekerRow + 4):
                 if i < 0 or i >= self.row:
                     continue
