@@ -1,7 +1,7 @@
 import pygame
 import sys
 import os
-from MAP import *
+from SOURCE.ALGORITHM import *
 import time
 
 class GUI:
@@ -598,7 +598,3 @@ class GUI:
                     sys.exit()
             pygame.display.flip()
 
-# Usage example:
-if __name__ == "__main__":
-    gui = GUI(1280, 720)
-    gui.run()
