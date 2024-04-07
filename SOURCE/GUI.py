@@ -1,7 +1,7 @@
 import pygame
 import sys
 import os
-from SOURCE.ALGORITHM import *
+from ALGORITHM import *
 import time
 
 class GUI:
