@@ -241,7 +241,7 @@ class GUI:
 
                             self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                             
-                            time.sleep(0.2)
+                            time.sleep(0.1)
                             tmpPos.clear()
                             tmpVal.clear()
                             map_matrix = Map(matrix.board, matrix.row, matrix.col, 0, None)
@@ -257,7 +257,7 @@ class GUI:
                         tmpMatrix.createAnnounce(step, tmpVal, tmpPos)
                         self.draw_matrix(tmpMatrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                         step += 1
-                        time.sleep(0.2)
+                        time.sleep(0.1)
                         
                     
                     if hiderPos != []:
@@ -277,7 +277,7 @@ class GUI:
 
                             self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                             step += 1
-                            time.sleep(0.2) 
+                            time.sleep(0.1) 
                         hiderPos.clear()
                         
                     
@@ -307,7 +307,7 @@ class GUI:
                                 
                                 self.draw_matrix(matrix.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                                 step += 1
-                                time.sleep(0.2)
+                                time.sleep(0.1)
                             map_matrix = Map(res[-1].board, res[-1].row, res[-1].col, res[-1].weight, None)
                         else:
                             if res == None:
@@ -326,7 +326,7 @@ class GUI:
                                 tmpMap.createAnnounce(step, tmpVal, tmpPos)
                                 self.draw_matrix(tmpMap.board, map_matrix.row, map_matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                                 step += 1
-                                time.sleep(0.2)
+                                time.sleep(0.1)
                         remaining_hiders = 0
                         for i in range(map_matrix.row):
                             for j in range(map_matrix.col):
@@ -383,11 +383,11 @@ class GUI:
                         self.screen.blit(text_surface, text_rect)
 
                         self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        time.sleep(0.2)
+                        time.sleep(0.1)
 
                         if tmp > 10:
                             self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                            time.sleep(0.2)
+                            time.sleep(0.1)
                             startMatrix = matrix
                             startMatrix.parent = None
                             break
@@ -399,12 +399,12 @@ class GUI:
                         matrix.board[hiderPos[0]][hiderPos[1]] = 2
                         if tmp > 10:
                             self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                            time.sleep(0.2)
+                            time.sleep(0.1)
                             startMatrix = matrix
                             startMatrix.parent = None
                             break
                         self.draw_matrix(matrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                        time.sleep(0.2)
+                        time.sleep(0.1)
                     score_point += 1
 
                     if tmp <= 10:
@@ -424,7 +424,8 @@ class GUI:
                             startMatrix = startMatrix.moveSeeker2(hiderPos)
                             
                             startMatrix.getVision()
-                            tmp = startMatrix.board[hiderPos[0]][hiderPos[1]]
+                            if(startMatrix.board[hiderPos[0]][hiderPos[1]] != 2):
+                                tmp = startMatrix.board[hiderPos[0]][hiderPos[1]]
                             startMatrix.board[hiderPos[0]][hiderPos[1]] = 2
                             if startMatrix.seekerPosition[0] == hiderPos[0] and startMatrix.seekerPosition[1] == hiderPos[1]:
                                 startMatrix.board[hiderPos[0]][hiderPos[1]] = 3
@@ -433,7 +434,6 @@ class GUI:
                                 text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
                                 text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
                                 self.screen.blit(text_surface, text_rect)
-
                                 self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
                                 time.sleep(10)
                                 return
@@ -443,21 +443,19 @@ class GUI:
                             text_surface = pygame.font.Font(None, 50).render(str(score_point), True, self.BLACK)
                             text_rect = text_surface.get_rect(left=start_x_note + 140, top=start_y_note + 60)
                             self.screen.blit(text_surface, text_rect)
-
                             self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                            time.sleep(0.2)
+                            time.sleep(0.1)
+
                             startMatrix.board[hiderPos[0]][hiderPos[1]] = tmp
                             moveHider(startMatrix, hiderPos)
-                            tmp = startMatrix.board[hiderPos[0]][hiderPos[1]]
-                            
+                            if(startMatrix.board[hiderPos[0]][hiderPos[1]] != 2):
+                                tmp = startMatrix.board[hiderPos[0]][hiderPos[1]]
                             startMatrix.board[hiderPos[0]][hiderPos[1]] = 2
                             self.draw_matrix(startMatrix.board, matrix.row, matrix.col, start_x_matrix, start_y_matrix, end_x_matrix, end_y_matrix)
-                            time.sleep(0.2)
+                            time.sleep(0.1)
 
-                            for i in range(startMatrix.row):
-                                for j in range(startMatrix.col):
-                                    if startMatrix.board[i][j] >= 19:
-                                        startMatrix.board[i][j] -= 20
+
+                            
 
             running = True
             # running = True

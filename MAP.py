@@ -1062,7 +1062,7 @@ def moveHider (map: Map, Pos):
     newHiderRow = direction[i][0] + Pos[0]
     newHiderCol = direction[i][1] + Pos[1]
     while (newHiderRow < 0 or newHiderCol < 0 or newHiderRow >= map.row or newHiderCol >= map.col or map.board[newHiderRow][newHiderCol] == 1):
-        i = random.randint(0, 7)
+        i = random.randint(0, 8)
         newHiderRow = direction[i][0] + Pos[0]
         newHiderCol = direction[i][1] + Pos[1]
     Pos[0] = newHiderRow
